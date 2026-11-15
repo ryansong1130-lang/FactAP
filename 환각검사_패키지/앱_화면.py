@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- FactAP 앱 화면 (Streamlit) · 대화형 AI 채팅 + 팩트체크 디자인 (2026-11-15)
+ FactAP 앱 화면 (Streamlit) · 대화형 AI 채팅 + 팩트체크 디자인 (2026-11-15, 결과 디자인 2026-11-16)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ■ 실행 방법 (패키지 폴더에서)
@@ -12,7 +12,7 @@
   3) 실행: streamlit run 앱_화면.py   → 브라우저가 열려요.
 
 ■ 화면 구성 (ChatGPT·Gemini·Claude 같은 채팅형)
-  왼쪽 옆 메뉴: FactAP 로고, '＋ 새 검사'(대화 비우기), '최근 검사' 목록(누르면 그 결과를 펼쳐 보여 줌)
+  왼쪽 옆 메뉴: FactAP 로고, '＋ 새 검사'(대화 비우기), '최근 검사' 목록(등급 색 점, 누르면 그 결과를 펼쳐 보여 줌)
   오른쪽 위: '공유' 메뉴 (앱 링크 복사, QR코드, QR코드 그림 내려받기. 내 컴퓨터에서 열었으면 나누는 방법 안내)
              'FactAP 소개' 메뉴 (AI 환각이란?, 기준을 정한 이유, 상위 모델의 종류 등. 글은 앱_소개.py 에서 고쳐요)
              오른쪽 위 메뉴와 예시 카드는 이모티콘 없이, 메뉴 글은 보고서처럼 '~했다/~이다' 문체로 써요 (2026-11-15)
@@ -21,23 +21,28 @@
           가장 최근 결과(또는 옆 메뉴에서 고른 결과)만 자세히 펼치고, 나머지는 요약 카드로 보여 줘요.
   아래 입력창 (2026-11-15 대화형): ChatGPT·Gemini 처럼 화면 맨 아래에 입력창 하나만 있어요.
                  ① 질문 → ② AI의 답변 → ③ 출처를 붙여 넣거나 'Fact TAP' → 검사. ('질문: … 답변: …' 으로 한 번에 넣어도 돼요)
-                 입력창 위 작은 버튼: 검사 모드(🔬 정밀 = AI 사용 / ⚡ 간이 = AI 없이, 남은 크레딧), 🏷️ 답변 유형, 📝 한 번에 입력(창)
-  첫 화면: 큰 인사말, 이 앱이 하는 일(교차 확인·위키백과·기준 6개·형광펜), '예시로 해 보기' 카드 4개
-  결과는 '검증 리포트'처럼 보여 줘요 (사실을 검증하는 앱이라서):
-        판정 카드(✓ ! ✕ 도장, 등급, 종합 위험도, 세 구간 위험도 눈금, 유형) → 답변 속 문제 문장 형광펜(옆에 찾은 기준 번호)
-        → 그 밖에 확인할 점 → 검증 항목(기준별 통과·의심·문제·해당 없음, 펼치면 근거) → 의심되는 환각 종류(사실·입력·맥락 상충)
-        → 교차 확인(상위 모델 답변) → AI 사용량 → '↻ 다시 검사', 결과 내려받기(.txt)
+                 입력창 위 작은 버튼: 검사 모드(정밀 = AI 사용 / 간이 = AI 없이, 남은 크레딧), 답변 유형, 한 번에 입력(창)
+                 (2026-11-16부터 화면의 이모티콘은 모두 Streamlit 의 작은 선 그림(:material/…: 아이콘)이나 CSS 색 점으로 바꿨어요)
+  첫 화면: 큰 인사말(뒤에 은은한 빛), 이 앱이 하는 일(교차 확인·위키백과·기준 6개·형광펜), '예시로 해 보기' 카드 4개(유형 꼬리표)
+  검사 중: '사실 확인하는 중…' 상자 안에 0~4단계가 차례로 나타나요 (지난 단계는 초록 체크, 지금 단계는 깜박이는 파란 점)
+  결과는 '검증 리포트'처럼 보여 줘요 (사실을 검증하는 앱이라서). 2026-11-16 디자인:
+        리포트 카드(반원 위험도 계기판: 세 등급 구간 + 바늘이 돌아가며 멈춤, ✓ ! ✕ 도장과 등급, 설명, 기준 N개 결과 막대, 유형 쪽지)
+        → 답변 속 문제 문장 형광펜(문장 끝에 찾은 기준 번호) → 그 밖에 확인할 점
+        → 검증 항목(체크리스트: 통과·의심·문제·해당 없음 동그라미와 작은 막대, 누르면 근거) → 의심되는 환각 종류(세 칸 카드)
+        → 교차 확인(상위 모델 답변) → AI 사용량 → '다시 검사', 결과 내려받기(.txt)
+        결과가 나올 때 카드가 살짝 떠오르고 막대가 자라나요 (기기에서 '움직임 줄이기'를 켜면 움직이지 않아요).
+        계기판·막대 색과 '통과·의심·문제' 이름은 보여 주기만 할 뿐, 점수 계산(검사_실행.py, 설정.py)과는 상관없어요.
   로고는 '검증'을 뜻하는 방패 + 체크, 색은 파랑 → 청록이에요 (.streamlit/config.toml 의 primaryColor 도 같은 파랑).
   유형이 애매하면 두 유형으로 모두 검사해 확률로 섞은 결과와 각 유형의 확률을 보여 줘요 (검사_실행.유형_섞기).
   같은 질문·답변·출처·유형·AI 사용으로 다시 검사하면 저장된 결과를 보여 주고 AI를 다시 부르지 않아요.
-  '↻ 다시 검사'를 누르면 저장된 결과를 버리고 처음부터 검사해요. AI 호출이 일부 실패한 결과는 저장하지 않아요.
+  '다시 검사'를 누르면 저장된 결과를 버리고 처음부터 검사해요. AI 호출이 일부 실패한 결과는 저장하지 않아요.
   검사할 때마다 결과를 기록/검사기록.jsonl 에 저장해요 (설정.기록_저장). 나중에 사람 판정을 적어 검증에 써요.
   휴대폰처럼 좁은 화면에서는 옆 메뉴가 접히고 칸이 위아래로 쌓여요.
 
 이 파일은 '예시'예요. 디자인과 문구는 앱 담당 조원이 자유롭게 바꿔도 돼요.
 화면 코드는 검사_실행.환각_검사() 의 결과(보고서)만 쓰기 때문에, 기준 파일을 고쳐도 화면은 그대로 동작해요.
 """
-import base64, copy, html, io, ipaddress, os, re, threading
+import base64, copy, html, io, ipaddress, math, os, re, threading
 from urllib.parse import urlparse
 
 import streamlit as st
@@ -59,8 +64,7 @@ _로고_svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><def
             '<path d="M32 11 L48.5 17.5 V30 C48.5 41.5 41 49.5 32 53 C23 49.5 15.5 41.5 15.5 30 V17.5 Z" fill="#fff"/>'
             '<path d="M24 31.5 L30 37.5 L41 26.5" fill="none" stroke="#0f766e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>')
 로고_그림 = "data:image/svg+xml;base64," + base64.b64encode(_로고_svg.encode()).decode()   # 결과 말풍선 옆 FactAP 그림
-등급_색 = {"위험": st.error, "보통": st.warning, "문제 없음": st.success}
-등급_표시 = {"문제 없음": "🟢", "보통": "🟡", "위험": "🔴"}
+등급_코드 = {"문제 없음": "g", "보통": "y", "위험": "r"}         # 등급 색 (g 초록, y 주황, r 빨강). 옆 메뉴 점, 등급 뜻에 씀
 판정_아이콘 = {"문제 없음": "✓", "보통": "!", "위험": "✕"}         # 결과 카드의 동그란 판정 도장
 환각_뜻 = {"사실 상충": "알려진 사실과 다른 내용", "입력 상충": "질문·지문과 맞지 않는 내용", "맥락 상충": "답변 앞뒤가 맞지 않는 내용"}
 최대_보여줄_문장 = 8
@@ -313,7 +317,7 @@ def _화면_꾸미기():
 .fa-옆로고 small { display: block; font-size: 0.72rem; color: var(--fa-흐림); font-weight: 600; }
 .fa-옆제목 { font-size: 0.78rem; color: var(--fa-흐림); padding: 1.1rem 0 0.35rem 0.7rem; margin: 0; font-weight: 600; line-height: 1.2; }
 /* Streamlit 이 HTML 글 상자 아래에 붙이는 -1rem 여백 때문에 다음 줄과 겹치지 않게 */
-[data-testid="stMarkdownContainer"]:has(> .fa-옆제목, > .fa-옆빈칸, > .fa-옆로고) { margin-bottom: 0 !important; }
+[data-testid="stMarkdownContainer"]:has(> .fa-옆제목, > .fa-옆빈칸, > .fa-옆로고, > .fa-진행) { margin-bottom: 0 !important; }
 .fa-옆빈칸 { font-size: 0.85rem; color: var(--fa-흐림); margin: 0 0.4rem 0 0.7rem; line-height: 1.5; }
 
 /* 처음 화면 인사말 */
@@ -332,7 +336,7 @@ def _화면_꾸미기():
   background: linear-gradient(90deg, var(--fa-강조), var(--fa-강조2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .fa-hero p { color: var(--fa-흐림); font-size: 1.02rem; margin: 0; }
 /* 한글이 낱자 중간에서 줄이 바뀌지 않게 (긴 링크는 아래 overflow-wrap 으로 줄바꿈) */
-.fa-hero, .fa-카드, .fa-답변판, .fa-근거, .fa-통과줄, .fa-확인카드, .fa-종류 { word-break: keep-all; overflow-wrap: anywhere; }
+.fa-hero, .fa-리포트, .fa-답변판, .fa-근거, .fa-통과줄, .fa-확인카드, .fa-종류, .fa-항목, .fa-계산, .fa-뜻줄 { word-break: keep-all; overflow-wrap: anywhere; }
 .fa-단계 { display: flex; gap: 0.4rem; justify-content: center; align-items: center; flex-wrap: wrap; margin: 1rem 0 0.4rem 0;
   font-size: 0.86rem; color: var(--fa-흐림); }
 .fa-단계 span { background: var(--fa-면); border-radius: 999px; padding: 0.3rem 0.75rem; color: var(--fa-글); }
@@ -347,55 +351,123 @@ def _화면_꾸미기():
   background: var(--fa-면); border-radius: 20px 20px 6px 20px; padding: 0.75rem 1rem; max-width: 85%; margin-left: auto; flex-grow: 0; }
 .fa-말 { font-size: 0.78rem; color: var(--fa-흐림); font-weight: 600; margin-bottom: 0.1rem; }
 
-/* 검증 리포트 카드 (판정 도장 + 위험도 눈금) */
-.fa-카드 { border-radius: 18px; padding: 1rem 1.15rem 0.95rem 1.15rem; border: 1px solid; margin: 0.2rem 0 0.6rem 0; background: #fff; }
-.fa-카드-위 { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; flex-wrap: wrap; }
-.fa-판정 { display: flex; align-items: center; gap: 0.7rem; }
-.fa-도장 { width: 2.6rem; height: 2.6rem; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  font-size: 1.35rem; font-weight: 900; color: #fff; flex-shrink: 0; box-shadow: 0 0 0 4px rgba(255,255,255,0.9), 0 0 0 5px currentColor; }
-.fa-판정-작은글 { font-size: 0.74rem; color: var(--fa-흐림); font-weight: 700; letter-spacing: 0.02em; }
-.fa-등급 { font-size: 1.3rem; font-weight: 800; line-height: 1.2; }
-.fa-점수 { font-size: 0.85rem; color: var(--fa-흐림); text-align: right; }
-.fa-점수 b { font-size: 1.7rem; color: var(--fa-글); margin-left: 0.3rem; font-variant-numeric: tabular-nums; }
-.fa-카드 p { margin: 0.6rem 0 0 0; font-size: 0.95rem; }
-.fa-쪽지 { display: inline-block; font-size: 0.78rem; padding: 0.15rem 0.6rem; border-radius: 999px; background: #fff;
-  border: 1px solid rgba(0,0,0,0.08); margin: 0.55rem 0.35rem 0 0; color: #374151; }
-.fa-문제없음 { background: #f0fdf4; border-color: #bbf7d0; color: var(--fa-초록); } .fa-문제없음 .fa-도장 { background: var(--fa-초록); }
-.fa-보통 { background: #fffbeb; border-color: #fde68a; color: var(--fa-노랑); } .fa-보통 .fa-도장 { background: #d97706; }
-.fa-위험 { background: #fef2f2; border-color: #fecaca; color: var(--fa-빨강); } .fa-위험 .fa-도장 { background: #dc2626; }
-.fa-기타 { background: #f8fafc; border-color: var(--fa-선); color: #334155; } .fa-기타 .fa-도장 { background: #64748b; }
-.fa-카드 p, .fa-카드 .fa-점수 b { color: var(--fa-글); }
-/* 위험도 눈금: 세 구간을 같은 너비로 (문제 없음 | 보통 | 위험), 안에서는 점수에 맞춰 위치 */
-.fa-눈금 { margin: 0.85rem 0 0.1rem 0; }
-.fa-눈금-줄 { position: relative; display: flex; height: 0.55rem; border-radius: 999px; overflow: visible; }
-.fa-눈금-줄 span { flex: 1; height: 100%; }
-.fa-눈금-줄 span:nth-child(1) { background: #86efac; border-radius: 999px 0 0 999px; }
-.fa-눈금-줄 span:nth-child(2) { background: #fcd34d; }
-.fa-눈금-줄 span:nth-child(3) { background: #fca5a5; border-radius: 0 999px 999px 0; }
-.fa-눈금-줄 i { position: absolute; top: 50%; width: 1.05rem; height: 1.05rem; border-radius: 50%; background: #fff;
-  border: 3px solid var(--fa-글); transform: translate(-50%, -50%); box-shadow: 0 1px 4px rgba(0,0,0,0.25); }
-.fa-눈금-글 { display: flex; font-size: 0.72rem; color: var(--fa-흐림); margin-top: 0.3rem; }
-.fa-눈금-글 span { flex: 1; text-align: center; }
-.fa-소제목 { font-weight: 700; font-size: 1rem; margin: 1.1rem 0 0.4rem 0; color: var(--fa-글); }
-.fa-소제목 small { font-weight: 500; color: var(--fa-흐림); font-size: 0.8rem; margin-left: 0.4rem; }
+/* ====== 검증 리포트 (2026-11-16 디자인): 위험도 계기판 + 판정 + 기준 막대, 결과가 나올 때 부드럽게 떠오름 ====== */
+/* 색 이름: g 통과·문제 없음(초록), y 의심·보통(주황), r 문제·위험(빨강), m 확인 못 함(진한 회색), n 해당 없음(회색) */
+.fa-sg { --s: #22c55e; --s진: #15803d; --s연: #dcfce7; } .fa-sy { --s: #f59e0b; --s진: #b45309; --s연: #fef3c7; }
+.fa-sr { --s: #ef4444; --s진: #b91c1c; --s연: #fee2e2; } .fa-sn { --s: #cbd5e1; --s진: #64748b; --s연: #f1f5f9; }
+.fa-sm { --s: #94a3b8; --s진: #475569; --s연: #e2e8f0; }
+@keyframes fa-떠오름 { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes fa-바늘 { from { transform: rotate(0deg); } }
+@keyframes fa-자람 { from { transform: scaleX(0); } }
+.fa-리포트 { --c: #64748b; --c진: #334155; --c연: #f1f5f9; --c선: #e2e8f0; position: relative; overflow: hidden;
+  border-radius: 22px; border: 1px solid var(--c선); margin: 0.2rem 0 0.7rem 0;
+  background: radial-gradient(130% 100% at 0% 0%, var(--c연) 0%, #ffffff 60%);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 14px 34px -14px rgba(15, 23, 42, 0.16); animation: fa-떠오름 0.45s ease-out both; }
+.fa-리포트.fa-문제없음 { --c: #16a34a; --c진: #15803d; --c연: #e9fbef; --c선: #bbf7d0; }
+.fa-리포트.fa-보통 { --c: #d97706; --c진: #b45309; --c연: #fff5e1; --c선: #fde68a; }
+.fa-리포트.fa-위험 { --c: #dc2626; --c진: #b91c1c; --c연: #ffeeee; --c선: #fecaca; }
+.fa-리포트::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--c); }
+.fa-리포트-머리 { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap;
+  padding: 0.95rem 1.25rem 0 1.25rem; font-size: 0.78rem; font-weight: 700; color: var(--fa-흐림); }
+.fa-리포트-머리 span { display: inline-flex; align-items: center; gap: 0.35rem; }
+.fa-리포트-머리 svg { color: var(--c); }
+.fa-리포트-몸 { display: grid; grid-template-columns: 13rem 1fr; gap: 1.4rem; align-items: center; padding: 0.5rem 1.25rem 1rem 1.25rem; }
+.fa-리포트-몸.fa-단독 { grid-template-columns: 1fr; }
+.fa-계기판 svg { width: 100%; height: auto; display: block; overflow: visible; }
+.fa-계기판 text { font-family: inherit; }
+/* 바늘 각도는 SVG 의 transform="rotate(각도)" 로 주고(Streamlit 이 style 속 변수를 지워서), 여기서는 0도에서 그 각도까지 돌아가게만 해요 */
+.fa-바늘 { transform-origin: 100px 100px; animation: fa-바늘 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both; }
+.fa-바늘 circle { filter: drop-shadow(0 1px 2px rgba(15, 23, 42, 0.35)); }
+.fa-등급줄 { display: flex; align-items: center; gap: 0.65rem; }
+.fa-도장 { width: 2.35rem; height: 2.35rem; border-radius: 50%; background: var(--c); color: #fff; display: flex; align-items: center;
+  justify-content: center; font-weight: 900; font-size: 1.15rem; flex-shrink: 0; box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.9), 0 0 0 6px var(--c선); }
+.fa-등급 { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.03em; color: var(--c진); line-height: 1.15; }
+.fa-리포트 p, .fa-리포트 div, .fa-항목-속 p, .fa-근거 div, .fa-답변판-글 { word-break: keep-all; }
+.fa-기타 .fa-등급 { font-size: 1.35rem; } .fa-기타 .fa-도장 { width: 2rem; height: 2rem; font-size: 1rem; }
+.fa-판정-설명 { margin: 0.55rem 0 0 0 !important; font-size: 0.95rem; color: #374151; line-height: 1.6; }
+.fa-기준막대 { margin-top: 0.9rem; }
+.fa-기준막대-제목 { font-size: 0.74rem; font-weight: 700; color: var(--fa-흐림); margin-bottom: 0.35rem; }
+.fa-기준막대-줄 { display: flex; gap: 3px; height: 0.5rem; border-radius: 999px; overflow: hidden; }
+.fa-기준막대-줄 span { height: 100%; background: var(--s); transform-origin: left; animation: fa-자람 0.7s ease-out 0.2s both; }
+.fa-기준막대-글 { display: flex; flex-wrap: wrap; gap: 0.25rem 0.85rem; margin-top: 0.45rem; font-size: 0.8rem; color: #374151; }
+.fa-기준막대-글 span { display: inline-flex; align-items: center; gap: 0.32rem; }
+.fa-기준막대-글 i { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--s); }
+.fa-기준막대-글 b { font-variant-numeric: tabular-nums; }
+.fa-쪽지들 { display: flex; flex-wrap: wrap; gap: 0.35rem; padding: 0.7rem 1.25rem 0.85rem 1.25rem; border-top: 1px dashed var(--c선); }
+.fa-쪽지 { font-size: 0.76rem; padding: 0.15rem 0.62rem; border-radius: 999px; background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--fa-선); color: #374151; }
+/* 등급 뜻 (펼치기 안) */
+.fa-뜻줄 { display: grid; grid-template-columns: 0.6rem 4.4rem 1fr auto; gap: 0.6rem; align-items: baseline; padding: 0.45rem 0.6rem;
+  border-radius: 10px; font-size: 0.88rem; line-height: 1.5; }
+.fa-뜻줄 i { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--s); align-self: center; }
+.fa-뜻줄.fa-지금 { background: #f8fafc; box-shadow: inset 0 0 0 1px var(--fa-선); }
+.fa-뜻줄 em { font-style: normal; font-size: 0.7rem; font-weight: 700; color: var(--fa-강조); background: #eff6ff; padding: 0.05rem 0.45rem;
+  border-radius: 999px; white-space: nowrap; }
+/* 결과 속 소제목 (작은 선 그림 + 제목) */
+.fa-소제목 { display: flex; align-items: center; gap: 0.55rem; font-weight: 800; font-size: 1.02rem; letter-spacing: -0.01em;
+  margin: 1.5rem 0 0.6rem 0; color: var(--fa-글); }
+.fa-소제목-표 { width: 1.8rem; height: 1.8rem; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #eff6ff, #ecfeff); color: var(--fa-강조); flex-shrink: 0; box-shadow: inset 0 0 0 1px #dbeafe; }
+.fa-소제목 small { font-weight: 600; color: var(--fa-흐림); font-size: 0.76rem; background: var(--fa-면); padding: 0.06rem 0.5rem; border-radius: 999px; }
 /* 답변 속 문제 문장 형광펜 */
-.fa-답변판 { border: 1px solid var(--fa-선); border-radius: 14px; padding: 0.8rem 0.95rem; background: #fcfcfd;
-  line-height: 1.85; font-size: 0.95rem; max-height: 22rem; overflow-y: auto; }
-.fa-형광 { background: linear-gradient(transparent 35%, #fde68a 35%); padding: 0 0.1rem; border-radius: 2px; color: inherit; }
-.fa-형광-강 { background: linear-gradient(transparent 35%, #fecaca 35%); }
-.fa-형광 sup { font-size: 0.68rem; font-weight: 700; color: var(--fa-빨강); margin-left: 0.12rem; }
-.fa-통과줄 { border-radius: 12px; background: #f0fdf4; color: var(--fa-초록); padding: 0.55rem 0.85rem; font-size: 0.92rem; }
-.fa-근거 { border-left: 3px solid #f59e0b; background: #fffbeb; border-radius: 0 10px 10px 0; padding: 0.45rem 0.75rem; margin: 0.35rem 0; font-size: 0.9rem; }
-.fa-근거 small { display: block; color: var(--fa-흐림); font-size: 0.75rem; font-weight: 700; margin-bottom: 0.1rem; }
-/* 검증 항목 요약, 환각 종류 막대 */
-.fa-항목요약 { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.4rem; }
-.fa-항목요약 span { font-size: 0.8rem; border-radius: 999px; padding: 0.15rem 0.65rem; border: 1px solid var(--fa-선); background: #fff; }
-.fa-종류들 { margin-bottom: 0.9rem; }
-.fa-종류 { display: grid; grid-template-columns: 11rem 1fr 2.6rem; align-items: center; gap: 0.7rem; margin: 0.45rem 0; font-size: 0.9rem; }
-.fa-종류 small { display: block; color: var(--fa-흐림); font-size: 0.72rem; line-height: 1.2; }
-.fa-종류-줄 { height: 0.5rem; background: #f1f5f9; border-radius: 999px; overflow: hidden; }
-.fa-종류-줄 span { display: block; height: 100%; border-radius: 999px; }
-.fa-종류 b { text-align: right; font-variant-numeric: tabular-nums; font-size: 0.85rem; }
+.fa-답변판 { border: 1px solid var(--fa-선); border-radius: 16px; background: #fff; overflow: hidden; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); }
+.fa-답변판-머리 { display: flex; justify-content: space-between; align-items: center; gap: 0.6rem; flex-wrap: wrap; padding: 0.5rem 1rem;
+  background: #f8fafc; border-bottom: 1px solid var(--fa-선); font-size: 0.76rem; font-weight: 700; color: var(--fa-흐림); }
+.fa-범례 { display: inline-flex; gap: 0.75rem; font-weight: 600; }
+.fa-범례 span { display: inline-flex; align-items: center; gap: 0.3rem; }
+.fa-범례 i { width: 1.1rem; height: 0.55rem; border-radius: 3px; background: #fde68a; } .fa-범례 i.fa-강 { background: #fecaca; }
+.fa-답변판-글 { padding: 0.85rem 1.05rem; line-height: 1.95; font-size: 0.95rem; max-height: 22rem; overflow-y: auto; }
+.fa-형광 { background: linear-gradient(transparent 28%, #fde68a 28%, #fde68a 94%, transparent 94%); padding: 0 0.12rem; border-radius: 3px;
+  color: inherit; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.fa-형광-강 { background: linear-gradient(transparent 28%, #fecaca 28%, #fecaca 94%, transparent 94%); }
+.fa-형광 sup { font-size: 0.78rem; font-weight: 800; color: #b45309; margin-left: 0.15rem; }
+.fa-형광-강 sup { color: #b91c1c; }
+.fa-통과줄 { display: flex; align-items: center; gap: 0.6rem; border-radius: 14px; background: #f0fdf4; border: 1px solid #bbf7d0;
+  color: var(--fa-초록); padding: 0.75rem 1rem; font-size: 0.93rem; font-weight: 600; }
+.fa-근거 { border: 1px solid var(--fa-선); border-left: 4px solid var(--s); background: #fff; border-radius: 12px;
+  padding: 0.6rem 0.9rem; margin: 0.45rem 0; font-size: 0.92rem; line-height: 1.6; }
+.fa-근거 small { display: inline-block; font-size: 0.72rem; font-weight: 700; color: var(--s진); background: var(--s연);
+  border-radius: 999px; padding: 0.04rem 0.55rem; margin-bottom: 0.3rem; }
+.fa-근거 div { color: var(--fa-글); }
+/* 검증 항목: 체크리스트 (누르면 근거가 펼쳐짐) */
+.fa-항목들 { display: flex; flex-direction: column; gap: 0.45rem; }
+.fa-항목 { border: 1px solid var(--fa-선); border-radius: 14px; background: #fff; transition: border-color 0.15s, box-shadow 0.15s;
+  animation: fa-떠오름 0.4s ease-out both; }
+.fa-항목:hover { border-color: #cbd5e1; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06); }
+.fa-항목[open] { border-color: #cbd5e1; box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08); }
+.fa-항목 summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.9rem; }
+.fa-항목 summary::-webkit-details-marker { display: none; }
+.fa-항목 summary::after { content: ""; width: 0.45rem; height: 0.45rem; border-right: 2px solid #94a3b8; border-bottom: 2px solid #94a3b8;
+  transform: rotate(45deg) translateY(-2px); margin: 0 0.25rem 0 0.1rem; transition: transform 0.2s; flex-shrink: 0; }
+.fa-항목[open] summary::after { transform: rotate(-135deg) translateY(-2px); }
+.fa-표 { width: 1.65rem; height: 1.65rem; border-radius: 50%; background: var(--s연); color: var(--s진); display: inline-flex;
+  align-items: center; justify-content: center; font-weight: 900; font-size: 0.85rem; flex-shrink: 0; }
+.fa-항목-이름 { flex: 1; min-width: 0; }
+.fa-항목-이름 b { display: block; font-size: 0.93rem; font-weight: 700; color: var(--fa-글); line-height: 1.35; }
+.fa-항목-이름 small { display: block; font-size: 0.74rem; color: var(--fa-흐림); line-height: 1.35; }
+.fa-항목-값 { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+.fa-항목-값 em { font-style: normal; font-size: 0.75rem; font-weight: 700; color: var(--s진); background: var(--s연); padding: 0.1rem 0.6rem;
+  border-radius: 999px; white-space: nowrap; }
+.fa-항목-값 b { font-size: 0.85rem; font-variant-numeric: tabular-nums; color: var(--fa-글); min-width: 2.1rem; text-align: right; }
+.fa-미니줄 { width: 4.5rem; height: 0.4rem; background: #f1f5f9; border-radius: 999px; overflow: hidden; }
+.fa-미니줄 i { display: block; height: 100%; background: var(--s); border-radius: 999px; transform-origin: left; animation: fa-자람 0.7s ease-out 0.2s both; }
+.fa-항목-속 { padding: 0.1rem 1rem 0.9rem 3.3rem; font-size: 0.9rem; color: #374151; line-height: 1.65; }
+.fa-항목-속 p { margin: 0 0 0.4rem 0; }
+.fa-항목-속 ul { margin: 0.2rem 0 0.5rem 1.1rem; padding: 0; } .fa-항목-속 li { margin: 0.1rem 0; }
+.fa-항목-정보 { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.45rem; }
+.fa-항목-정보 span { font-size: 0.72rem; color: var(--fa-흐림); background: var(--fa-면); border-radius: 999px; padding: 0.08rem 0.55rem; }
+.fa-계산 { font-size: 0.8rem; color: var(--fa-흐림); margin: 0.6rem 0 0 0; padding: 0.6rem 0.85rem; border-radius: 12px; background: #f8fafc; line-height: 1.6; }
+.fa-계산 b { color: #334155; margin-right: 0.35rem; }
+/* 의심되는 환각 종류: 세 칸 카드 */
+.fa-종류들 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.55rem; margin-bottom: 0.9rem; }
+.fa-종류 { border: 1px solid var(--fa-선); border-radius: 14px; padding: 0.75rem 0.9rem 0.8rem 0.9rem; background: #fff; animation: fa-떠오름 0.4s ease-out both; }
+.fa-종류.fa-sr { background: linear-gradient(180deg, #fff5f5, #fff); border-color: #fecaca; }
+.fa-종류.fa-sy { background: linear-gradient(180deg, #fffaf0, #fff); border-color: #fde68a; }
+.fa-종류-위 { display: flex; justify-content: space-between; align-items: baseline; gap: 0.4rem; font-weight: 700; font-size: 0.9rem; color: var(--fa-글); }
+.fa-종류-위 b { font-size: 1.3rem; font-weight: 800; color: var(--s진); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.fa-종류-줄 { height: 0.4rem; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin: 0.35rem 0 0.45rem 0; }
+.fa-종류-줄 i { display: block; height: 100%; background: var(--s); border-radius: 999px; transform-origin: left; animation: fa-자람 0.8s ease-out 0.2s both; }
+.fa-종류 small { font-size: 0.74rem; color: var(--fa-흐림); line-height: 1.4; display: block; }
 
 /* 입력 상자 (둥근 카드) */
 [data-testid="stForm"] { border: 1px solid var(--fa-선); border-radius: 26px; padding: 1rem 1.1rem 0.7rem 1.1rem;
@@ -420,7 +492,14 @@ textarea, input { font-size: 16px !important; }       /* 아이폰에서 입력�
   .block-container { padding: 3rem 0.8rem 3rem 0.8rem !important; }
   .fa-hero { margin-top: 1.2rem; } .fa-hero h1 { font-size: 1.55rem; }
   .fa-확인카드 { grid-template-columns: 1fr; gap: 0.4rem; } .fa-확인카드 div { padding: 0.5rem 0.75rem; }
-  .fa-종류 { grid-template-columns: 7.2rem 1fr 2.4rem; gap: 0.5rem; }
+  .fa-리포트-몸 { grid-template-columns: 1fr; gap: 0.3rem; justify-items: center; text-align: center; padding: 0.3rem 1rem 0.9rem 1rem; }
+  .fa-리포트-머리 { padding: 0.9rem 1rem 0 1rem; } .fa-쪽지들 { padding: 0.65rem 1rem 0.8rem 1rem; justify-content: center; }
+  .fa-계기판 { width: 12rem; } .fa-등급줄, .fa-기준막대-글 { justify-content: center; } .fa-등급 { font-size: 1.6rem; }
+  .fa-종류들 { gap: 0.4rem; } .fa-종류 { padding: 0.55rem 0.65rem 0.6rem 0.65rem; }
+  .fa-종류-위 { flex-direction: column; align-items: flex-start; gap: 0; font-size: 0.8rem; } .fa-종류-위 b { font-size: 1.15rem; }
+  .fa-종류 small { display: none; }
+  .fa-미니줄 { display: none; } .fa-항목 summary { gap: 0.55rem; padding: 0.6rem 0.7rem; } .fa-항목-속 { padding: 0.1rem 0.85rem 0.85rem 0.85rem; }
+  .fa-뜻줄 { grid-template-columns: 0.6rem 4.2rem 1fr; } .fa-뜻줄 em { display: none; }
   [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) [data-testid="stChatMessageContent"] { max-width: 95%; }
   [data-testid="stForm"] { border-radius: 20px; padding: 0.8rem 0.8rem 0.5rem 0.8rem; } }
 
@@ -513,6 +592,58 @@ body:has([data-testid="stDialog"]) [data-testid="stPopoverBody"] { display: none
   .st-key-fa_tools { flex-wrap: nowrap !important; overflow-x: auto; scrollbar-width: none; }
   .st-key-fa_tools button { padding: 0.1rem 0.65rem !important; } .st-key-fa_tools button p { font-size: 0.8rem !important; white-space: nowrap; }
   [data-testid="stBottomBlockContainer"] { padding-left: 0.7rem !important; padding-right: 0.7rem !important; } }
+/* ====== 디자인 다듬기 (2026-11-16) ====== */
+/* 옆 메뉴 '최근 검사': 이모티콘 대신 등급 색 점, 지금 펼친 결과는 회색 바탕 */
+[class*="st-key-fa_rec_"] button p::before { content: ""; display: inline-block; width: 0.5rem; height: 0.5rem; border-radius: 50%;
+  margin-right: 0.6rem; vertical-align: 0.1rem; background: #cbd5e1; }
+[class*="st-key-fa_rec_g_"] button p::before { background: #22c55e; }
+[class*="st-key-fa_rec_y_"] button p::before { background: #f59e0b; }
+[class*="st-key-fa_rec_r_"] button p::before { background: #ef4444; }
+[class*="st-key-fa_rec_"][class*="_on_"] button { background: #eceef1 !important; }
+[class*="st-key-fa_rec_"][class*="_on_"] button p { font-weight: 600; }
+/* 검사 중: 단계 표시 (지난 단계는 체크, 지금 단계는 깜박이는 파란 점) */
+@keyframes fa-맥박 { 0% { box-shadow: 0 0 0 0 rgba(29, 78, 216, 0.35); } 70% { box-shadow: 0 0 0 7px rgba(29, 78, 216, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(29, 78, 216, 0); } }
+[data-testid="stExpander"]:has(.fa-진행) details { border-color: #dbeafe; background: linear-gradient(180deg, #f8fbff, #ffffff); }
+[data-testid="stVerticalBlock"]:has(> .stElementContainer .fa-진행) { gap: 0.4rem; }
+.fa-진행 { display: flex; align-items: center; gap: 0.65rem; font-size: 0.9rem; color: var(--fa-흐림); animation: fa-떠오름 0.3s ease-out both; }
+.fa-진행-표 { width: 1.4rem; height: 1.4rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 800; background: #dcfce7; color: #15803d; flex-shrink: 0; }
+.stElementContainer:has(.fa-진행):not(:last-child) .fa-진행-표 { font-size: 0; }
+.stElementContainer:has(.fa-진행):not(:last-child) .fa-진행-표::after { content: "✓"; font-size: 0.78rem; }
+.stElementContainer:has(.fa-진행):last-child .fa-진행 { color: var(--fa-글); font-weight: 600; }
+.stElementContainer:has(.fa-진행):last-child .fa-진행-표 { background: #dbeafe; color: var(--fa-강조); animation: fa-맥박 1.4s ease-out infinite; }
+/* 검사하는 동안에는 바로 앞 화면(출처 묻기, Fact TAP 버튼)의 흐린 잔상을 숨겨요 */
+.stApp:has(.fa-진행) [data-testid="stMainBlockContainer"] [data-stale="true"] { display: none !important; }
+.stApp:has(.fa-진행) [data-testid="stMainBlockContainer"] [data-testid="stChatMessage"]:not(:has([data-stale="false"])) { display: none !important; }
+/* 첫 화면: 인사말 뒤 은은한 빛, 특징 앞 작은 점, 예시 카드의 유형 꼬리표 */
+.fa-인사 { position: relative; isolation: isolate; }
+.fa-인사::before { content: ""; position: absolute; z-index: -1; left: 50%; top: -1.5rem; width: min(580px, 100%); height: 15rem;
+  transform: translateX(-50%); pointer-events: none; filter: blur(18px);
+  background: radial-gradient(40% 55% at 30% 45%, rgba(59, 130, 246, 0.16), transparent 70%),
+              radial-gradient(40% 55% at 70% 40%, rgba(20, 184, 166, 0.15), transparent 70%),
+              radial-gradient(35% 45% at 52% 72%, rgba(124, 58, 237, 0.10), transparent 70%); }
+.fa-특징 span { background: rgba(255, 255, 255, 0.75); border: 1px solid var(--fa-선); }
+.fa-특징 span::before { content: ""; display: inline-block; width: 0.42rem; height: 0.42rem; border-radius: 50%; margin-right: 0.42rem;
+  vertical-align: 0.1rem; background: linear-gradient(135deg, var(--fa-강조), var(--fa-강조2)); }
+.st-key-fa_examples .stButton button code { font-family: inherit !important; font-size: 0.7rem; font-weight: 700; color: var(--fa-강조);
+  background: #eff6ff; border: none; border-radius: 999px; padding: 0.12rem 0.5rem; margin-right: 0.2rem; vertical-align: 0.08rem; }
+/* 버튼에 마우스를 올리거나 누를 때 색: 테마 파일(.streamlit/config.toml)이 없어도 Streamlit 기본 빨강 대신 FactAP 파랑 */
+.stButton button:not([kind="primary"]):hover, [data-testid="stDownloadButton"] button:hover, [data-testid="stPopover"] button:hover,
+.stButton button:not([kind="primary"]):focus-visible, [data-testid="stPopover"] button:focus-visible {
+  color: var(--fa-강조) !important; border-color: #93c5fd !important; }
+.stButton button:not([kind="primary"]):active, [data-testid="stDownloadButton"] button:active { background: #eff6ff !important; color: var(--fa-강조) !important; }
+[data-testid="stSidebar"] .stButton button:hover { color: var(--fa-글) !important; }
+[data-testid="stExpander"] summary:hover, [data-testid="stExpander"] summary:hover * { color: var(--fa-강조) !important; }
+[data-testid="stExpander"] summary p { word-break: keep-all; }
+/* 결과 아래 버튼 */
+[class*="st-key-fa_actions"] .stButton button, [class*="st-key-fa_actions"] [data-testid="stDownloadButton"] button { min-height: 2.6rem; font-weight: 600; }
+@media (max-width: 640px) {
+  .st-key-fa_examples .stButton button code { display: none; } }
+/* 움직임을 줄이라고 설정한 기기에서는 움직이지 않게 */
+@media (prefers-reduced-motion: reduce) {
+  .fa-리포트, .fa-항목, .fa-종류, .fa-진행, .fa-바늘, .fa-기준막대-줄 span, .fa-미니줄 i, .fa-종류-줄 i, .fa-인사-그림,
+  .stElementContainer:has(.fa-진행):last-child .fa-진행-표 { animation: none !important; } }
 </style>""".replace("FA_글꼴", _글꼴), unsafe_allow_html=True)
 
 
@@ -573,7 +704,9 @@ def _답변_표시(답변, 문제들):
     남은것 = [m for m in 문제들 if id(m) not in 찾음]
     if not 찾음:
         return None, 남은것
-    return '<div class="fa-답변판">' + "<br>".join(줄들) + "</div>", 남은것
+    머리 = ('<div class="fa-답변판-머리"><span>AI의 답변</span><span class="fa-범례"><span><i></i>의심</span>'
+           '<span><i class="fa-강"></i>강한 의심</span></span></div>')
+    return '<div class="fa-답변판">' + 머리 + '<div class="fa-답변판-글">' + "<br>".join(줄들) + "</div></div>", 남은것
 
 
 def _내려받기_글(보고서):
@@ -588,24 +721,81 @@ def _내려받기_글(보고서):
 
 def _내려받기_버튼(보고서, 번호):
     시각 = str(보고서.get("시각", "")).replace(":", "").replace("-", "").replace("T", "_")[:13]
-    st.download_button("📄 결과 내려받기 (.txt)", data=_내려받기_글(보고서).encode("utf-8"), key=f"내려받기_{번호}",
-                       file_name=f"{앱_이름}_결과_{시각 or '결과'}.txt", mime="text/plain", use_container_width=True)
+    _버튼(st.download_button, "결과 내려받기 (.txt)", ":material/download:", data=_내려받기_글(보고서).encode("utf-8"),
+          key=f"내려받기_{번호}", file_name=f"{앱_이름}_결과_{시각 or '결과'}.txt", mime="text/plain", use_container_width=True)
 
 
 def _등급_뜻(지금_등급, 방법):
-    """세 등급의 뜻 (지금 등급은 굵게)"""
+    """세 등급의 뜻 (지금 등급에 '지금 결과' 표시)"""
     줄 = []
     for 등급 in ["문제 없음", "보통", "위험"]:
-        글 = f"{등급_표시[등급]} {등급}: {설정.등급_설명.get(등급, '')}"
-        줄.append(f"- **{글}** ← 지금 결과" if 등급 == 지금_등급 else f"- {글}")
-    with st.expander("등급은 무슨 뜻인가요?"):
-        st.markdown("\n".join(줄))
+        지금 = 등급 == 지금_등급
+        줄.append(f'<div class="fa-뜻줄 fa-s{등급_코드[등급]}{" fa-지금" if 지금 else ""}"><i></i><b>{등급}</b>'
+                 f'<span>{html.escape(설정.등급_설명.get(등급, ""))}</span>{"<em>지금 결과</em>" if 지금 else ""}</div>')
+    with _펼침("등급은 무슨 뜻인가요?", ":material/help:"):
+        st.markdown("".join(줄), unsafe_allow_html=True)
         st.caption(f"종합 위험도(0~1) 기준: {등급_경계_글(방법)}")
 
 
-# ------------------------------------------------------------------ 결과 그리기
+# ------------------------------------------------------------------ 결과 그리기 (2026-11-16 디자인: 계기판 · 체크리스트 · 종류 카드)
+# 작은 선 그림 (이모티콘 대신). 모양은 Lucide 아이콘(ISC 라이선스)을 따랐어요.
+_아이콘_모양 = {
+    "방패": '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72'
+           'a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+    "형광펜": '<path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/>',
+    "주의": '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+    "목록": '<path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/>',
+    "과녁": '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+    "체크": '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+}
+# 기준 하나의 판정: 이름 → 색(g 초록, y 주황, r 빨강, m 진한 회색, n 회색)과 동그라미 안 글자
+_판정_순서 = ["통과", "의심", "문제", "확인 못 함", "해당 없음"]
+_판정_색 = {"통과": "g", "의심": "y", "문제": "r", "확인 못 함": "m", "해당 없음": "n"}
+_판정_표 = {"통과": "✓", "의심": "!", "문제": "✕", "확인 못 함": "–", "해당 없음": "–"}
+
+
+def _아이콘(이름, 크기=16):
+    return (f'<svg viewBox="0 0 24 24" width="{크기}" height="{크기}" fill="none" stroke="currentColor" stroke-width="2" '
+            f'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{_아이콘_모양[이름]}</svg>')
+
+
+def _소제목(아이콘, 제목, 덧붙임=""):
+    st.markdown(f'<div class="fa-소제목"><span class="fa-소제목-표">{_아이콘(아이콘)}</span>{html.escape(제목)}'
+                + (f"<small>{html.escape(덧붙임)}</small>" if 덧붙임 else "") + "</div>", unsafe_allow_html=True)
+
+
+def _펼침(제목, 아이콘=None, **옵션):
+    """st.expander + 작은 그림(아이콘). 아이콘을 못 쓰는 오래된 Streamlit 이면 그림 없이."""
+    try:
+        return st.expander(제목, icon=아이콘, **옵션)
+    except TypeError:
+        return st.expander(제목, **옵션)
+
+
+def _버튼(만들기, 글, 아이콘=None, **옵션):
+    """st.button · st.download_button + 작은 그림(아이콘). 오래된 Streamlit 이면 그림 없이."""
+    try:
+        return 만들기(글, icon=아이콘, **옵션)
+    except TypeError:
+        return 만들기(글, **옵션)
+
+
+def _판정(r):
+    """기준 하나의 결과 → '통과'·'의심'·'문제'·'확인 못 함'·'해당 없음' (화면 표시용 이름일 뿐, 점수 계산과는 상관없어요)"""
+    v = r["위험도"]
+    if v is None:      # 출처가 없을 때 ②처럼 '해당 없음'인 것과, AI·인터넷이 없어 '확인 못 함'인 것을 나눠 보여 줘요
+        return "해당 없음" if r["상태"] == "해당 없음" else "확인 못 함"
+    return "문제" if v >= 0.6 else "의심" if v >= 0.3 else "통과"
+
+
+def _글_html(글):
+    """근거 글을 HTML로: 특수 문자는 안전하게 바꾸고, **굵게** 와 줄바꿈만 살려요"""
+    글 = html.escape(str(글 or ""))
+    return re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", 글).replace("\n", "<br>")
+
+
 def _눈금_위치(위험도, 방법):
-    """위험도(0~1) → 눈금 위의 위치(%). 세 등급 구간을 같은 너비(1/3씩)로 그리고, 구간 안에서는 비례해서 놓아요."""
+    """위험도(0~1) → 계기판 위의 위치(%). 세 등급 구간을 같은 너비(1/3씩)로 그리고, 구간 안에서는 비례해서 놓아요."""
     경계 = 설정.등급_기준_방법별.get(방법 or 설정.합치는_방법, 설정.등급_기준)
     끝들 = [0.0] + [min(1.0, 상한) for 상한, _ in 경계]
     v = max(0.0, min(1.0, float(위험도)))
@@ -617,22 +807,56 @@ def _눈금_위치(위험도, 방법):
     return 100.0
 
 
-def _위험도_눈금(위험도, 방법):
+def _계기판(위험도, 방법):
+    """종합 위험도 계기판 (반원). 등급 구간(문제 없음 | 보통 | 위험)을 같은 각도로 그리고, 지금 구간만 진하게.
+    동그란 바늘이 왼쪽 끝에서 출발해 _눈금_위치 까지 돌아가요. 구간 사이 숫자는 등급 경계(설정.py)예요."""
     경계 = 설정.등급_기준_방법별.get(방법 or 설정.합치는_방법, 설정.등급_기준)
-    위치 = _눈금_위치(위험도, 방법)
-    글 = "".join(f"<span>{html.escape(이름)}</span>" for _, 이름 in 경계)
-    return (f'<div class="fa-눈금" title="등급 경계: {html.escape(등급_경계_글(방법))}"><div class="fa-눈금-줄">'
-            + "<span></span>" * len(경계) + f'<i style="left:{위치:.1f}%"></i></div><div class="fa-눈금-글">{글}</div></div>')
+    n = len(경계)
+    v = max(0.0, min(1.0, float(위험도)))
+    지금 = next((i for i, (상한, _) in enumerate(경계) if v < 상한), n - 1)      # 등급을 정할 때와 같은 방법
+    색들 = ["#22c55e"] + ["#f59e0b"] * max(0, n - 2) + ["#ef4444"]
+
+    def 점(각, 반지름):
+        r = math.radians(각)
+        return 100 + 반지름 * math.cos(r), 100 - 반지름 * math.sin(r)
+
+    조각 = []
+    for i in range(n):
+        (x1, y1), (x2, y2) = 점(180 - i * 180 / n - (1.2 if i else 0), 80), 점(180 - (i + 1) * 180 / n + (1.2 if i < n - 1 else 0), 80)
+        조각.append(f'<path d="M{x1:.2f} {y1:.2f} A80 80 0 0 1 {x2:.2f} {y2:.2f}" fill="none" stroke="{색들[i]}" '
+                   f'stroke-width="15" opacity="{1 if i == 지금 else 0.2}"/>')
+    흐린글 = 'text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8"'
+    for i, (상한, _) in enumerate(경계[:-1]):
+        x, y = 점(180 - (i + 1) * 180 / n, 99)
+        조각.append(f'<text x="{x:.1f}" y="{y:.1f}" {흐린글}>{상한:g}</text>')
+    조각.append(f'<text x="20" y="124" {흐린글}>0</text><text x="180" y="124" {흐린글}>1</text>'
+               f'<text x="100" y="89" text-anchor="middle" font-size="34" font-weight="800" fill="#1f2328" letter-spacing="-1">{v:.2f}</text>'
+               '<text x="100" y="108" text-anchor="middle" font-size="11" font-weight="600" fill="#6b7280">종합 위험도</text>'
+               f'<g class="fa-바늘" transform="rotate({_눈금_위치(v, 방법) * 1.8:.1f})">'
+               '<circle cx="20" cy="100" r="9" fill="#fff" stroke="#1f2328" stroke-width="4"/></g>')
+    return (f'<div class="fa-계기판" title="등급 경계: {html.escape(등급_경계_글(방법))}">'
+            f'<svg viewBox="0 -6 200 134" role="img" aria-label="종합 위험도 {v:.2f}">' + "".join(조각) + "</svg></div>")
+
+
+def _항목_막대(결과들):
+    """기준 N개의 판정을 한 줄 막대로 (통과 · 의심 · 문제 · 확인 못 함 · 해당 없음)"""
+    세기 = {}
+    for x in 결과들:
+        판 = _판정(x["결과"])
+        세기[판] = 세기.get(판, 0) + 1
+    있는 = [p for p in _판정_순서 if 세기.get(p)]
+    줄 = "".join(f'<span class="fa-s{_판정_색[p]}" style="flex:{세기[p]}"></span>' for p in 있는)
+    글 = "".join(f'<span class="fa-s{_판정_색[p]}"><i></i>{p} <b>{세기[p]}</b></span>' for p in 있는)
+    return (f'<div class="fa-기준막대"><div class="fa-기준막대-제목">기준 {len(결과들)}개 검사 결과</div>'
+            f'<div class="fa-기준막대-줄">{줄}</div><div class="fa-기준막대-글">{글}</div></div>')
 
 
 def _등급_카드(보고서):
-    """검증 리포트의 머리: 판정 도장(✓ ! ✕), 등급, 종합 위험도, 위험도 눈금, 쪽지(유형·AI 사용량)"""
+    """검증 리포트의 머리: 위험도 계기판, 판정 도장(✓ ! ✕)과 등급, 설명, 기준 결과 막대, 쪽지(유형·AI 사용량)"""
     종합 = 보고서["종합"] or {}
     등급 = 종합.get("등급", "")
     색 = {"문제 없음": "fa-문제없음", "보통": "fa-보통", "위험": "fa-위험"}.get(등급, "fa-기타")
     위험도 = 종합.get("위험도")
-    점수 = "" if 위험도 is None else f'<span class="fa-점수">종합 위험도<b>{위험도:.2f}</b></span>'
-    눈금 = "" if 위험도 is None else _위험도_눈금(위험도, 종합.get("방법"))
     설명 = 종합.get("등급_설명") or (종합.get("근거") if 보고서["유형"] is None else "")
     쪽지 = []
     if 보고서["유형"]:
@@ -640,18 +864,42 @@ def _등급_카드(보고서):
     섞기 = 종합.get("유형_섞기")
     if 섞기:
         쪽지 = ["두 유형으로 검사"] + [f"{t} {p:.0%}" for t, p in zip(섞기["유형"], 섞기["확률"])]
-    if 종합.get("간이_검사"):
-        쪽지.append("간이 검사 (AI 없이)")
     u = 보고서.get("AI_사용량") or {}
     if u.get("호출"):
         쪽지.append(f"AI {u['호출']:.0f}번" + (f" · ${u['비용']:.3f}" if u.get("비용") else ""))
-    판정 = (f'<div class="fa-판정"><span class="fa-도장">{판정_아이콘.get(등급, "i")}</span>'
-            f'<div><div class="fa-판정-작은글">{앱_이름} 검증 결과</div><div class="fa-등급">{html.escape(str(등급))}</div></div></div>')
-    st.markdown(
-        f'<div class="fa-카드 {색}"><div class="fa-카드-위">{판정}{점수}</div>{눈금}'
-        + (f"<p>{html.escape(str(설명))}</p>" if 설명 else "")
-        + "".join(f'<span class="fa-쪽지">{html.escape(s)}</span>' for s in 쪽지) + "</div>",
-        unsafe_allow_html=True)
+    결과들 = 보고서.get("기준결과들") or []
+    계기 = "" if 위험도 is None else _계기판(위험도, 종합.get("방법"))
+    막대 = _항목_막대(결과들) if 결과들 and 위험도 is not None else ""
+    방식 = "" if 보고서["유형"] is None else ("간이 검사 · AI 없이" if 종합.get("간이_검사") else "정밀 검사 · AI 교차 확인")
+    머리 = (f'<div class="fa-리포트-머리"><span>{_아이콘("방패", 15)}{앱_이름} 검증 리포트</span>'
+           + (f"<span>{방식}</span>" if 방식 else "") + "</div>")
+    판정 = (f'<div><div class="fa-등급줄"><span class="fa-도장">{판정_아이콘.get(등급, "i")}</span>'
+           f'<span class="fa-등급">{html.escape(str(등급))}</span></div>'
+           + (f'<p class="fa-판정-설명">{html.escape(str(설명))}</p>' if 설명 else "") + 막대 + "</div>")
+    쪽지들 = ('<div class="fa-쪽지들">' + "".join(f'<span class="fa-쪽지">{html.escape(s)}</span>' for s in 쪽지) + "</div>") if 쪽지 else ""
+    st.markdown(f'<div class="fa-리포트 {색}">{머리}<div class="fa-리포트-몸{"" if 계기 else " fa-단독"}">{계기}{판정}</div>{쪽지들}</div>',
+                unsafe_allow_html=True)
+
+
+def _항목_목록(결과들, 섞기):
+    """검증 항목을 체크리스트처럼: 동그라미 판정 · 기준 이름 · 작은 막대 · 위험도. 누르면 근거와 문제 문장이 펼쳐져요."""
+    줄 = []
+    for x in 결과들:
+        r, 기준 = x["결과"], x["정보"]
+        판 = _판정(r)
+        값 = r["위험도"]
+        붙임 = f" ({x['유형']})" if 섞기 and x.get("유형") else ""
+        이름 = f"{기준['번호']} {기준['이름']}{붙임}"
+        막대 = "" if 값 is None else f'<span class="fa-미니줄"><i style="width:{max(값 * 100, 4) if 값 > 0 else 0:.0f}%"></i></span>'
+        문장들 = "".join(f"<li>{html.escape(str(s))}</li>" for s in r["문제_문장"])
+        속 = (f'<div class="fa-항목-속"><p>{_글_html(r["근거"])}</p>' + (f"<ul>{문장들}</ul>" if 문장들 else "")
+              + f'<div class="fa-항목-정보"><span>맡는 환각 · {html.escape(str(기준["맡는_환각"]))}</span>'
+                f'<span>방식 · {html.escape(str(기준["방식"]))}</span><span>중요도 · {중요도(기준):g}</span></div></div>')
+        줄.append(f'<details class="fa-항목 fa-s{_판정_색[판]}"><summary><span class="fa-표">{_판정_표[판]}</span>'
+                 f'<span class="fa-항목-이름"><b>{html.escape(이름)}</b>'
+                 f'<small>{html.escape(str(기준["맡는_환각"]))}</small></span>'
+                 f'<span class="fa-항목-값">{막대}<em>{판}</em>' + ("" if 값 is None else f"<b>{값:.2f}</b>") + f"</span></summary>{속}</details>")
+    return '<div class="fa-항목들">' + "".join(줄) + "</div>"
 
 
 def _결과_자세히(보고서, 번호):
@@ -661,75 +909,54 @@ def _결과_자세히(보고서, 번호):
     정보 = 보고서.get("유형_정보") or {}
     if 섞기:      # 섞은 계산식은 아래 근거 글에 있어서, 여기서는 '직접 고르는 방법'만 알려 줘요
         st.caption(f"유형이 {섞기['유형'][0]}인지 {섞기['유형'][1]}인지 애매해서 두 유형의 점수를 확률로 섞었어요. "
-                   "유형을 정확히 알면 아래 입력 상자의 '유형'에서 직접 골라 다시 검사해 보세요.")
+                   "유형을 정확히 알면 아래 입력창 위의 '유형'에서 직접 골라 다시 검사해 보세요.")
     elif 정보.get("애매함"):
         st.caption(f"유형 분류가 애매했어요 (1순위 {정보.get('유형')}, 2순위 {정보.get('2순위')}). "
                    "다른 유형이 맞다면 '유형'에서 직접 골라 다시 검사해 보세요.")
-    if 종합["등급"] in 등급_표시:
+    if 종합["등급"] in 등급_코드:
         _등급_뜻(종합["등급"], 종합.get("방법"))
 
     # 1) 답변 속 문제 문장에 형광펜
     문제들 = _다시_확인할_문장들(보고서)
-    st.markdown('<div class="fa-소제목">🖍️ 답변 속 확인할 문장</div>', unsafe_allow_html=True)
+    _소제목("형광펜", "답변 속 확인할 문장")
     판, 남은것 = _답변_표시(보고서["답변"], 문제들)
     if 판:
         st.markdown(판, unsafe_allow_html=True)
-        st.caption("형광펜 = 기준이 문제라고 본 문장 (빨간 형광펜은 더 강한 의심). 옆의 작은 번호는 그 문장을 찾은 기준이에요. "
-                   "다른 자료로 꼭 확인해 보세요.")
+        st.caption("문장 끝의 작은 번호는 그 문장을 찾은 기준이에요. 아래 검증 항목에서 같은 번호를 누르면 근거를 볼 수 있어요.")
     elif not 문제들:
-        st.markdown('<div class="fa-통과줄">✓ 기준들이 문제라고 표시한 문장이 없어요.</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="fa-통과줄">{_아이콘("체크", 18)}기준들이 문제라고 표시한 문장이 없어요.</div>', unsafe_allow_html=True)
     else:      # 기준이 짚은 글이 답변 문장과 글자로 딱 맞지 않을 때 (예: 검사 AI가 문장을 바꿔 적음)
         st.caption("답변 문장 가운데 바로 칠할 곳은 찾지 못했어요. 기준이 찾은 내용은 바로 아래 '그 밖에 확인할 점'에 있어요.")
     if 남은것:
-        st.markdown(f'<div class="fa-소제목">그 밖에 확인할 점 <small>{len(남은것)}개</small></div>', unsafe_allow_html=True)
-        for m in 남은것[:최대_보여줄_문장]:
-            st.markdown(f'<div class="fa-근거"><small>{html.escape(m["기준"])}</small>{html.escape(m["글"])}</div>',
-                        unsafe_allow_html=True)
+        _소제목("주의", "그 밖에 확인할 점", f"{len(남은것)}개")
+        st.markdown("".join(
+            f'<div class="fa-근거 fa-s{"r" if m["위험도"] >= 0.6 else "y"}"><small>{html.escape(m["기준"])}</small>'
+            f'<div>{html.escape(m["글"])}</div></div>' for m in 남은것[:최대_보여줄_문장]), unsafe_allow_html=True)
         if len(남은것) > 최대_보여줄_문장:
             with st.expander(f"나머지 {len(남은것) - 최대_보여줄_문장}개 더 보기"):
                 for m in 남은것[최대_보여줄_문장:]:
                     st.markdown(f"- {m['글']} ({m['기준']})")
 
-    # 2) 검증 항목 (기준별 결과를 체크리스트처럼)
+    # 2) 검증 항목 (기준별 결과를 체크리스트처럼, 누르면 근거)
     결과들 = 보고서["기준결과들"]
-    def 판정말(r):
-        v = r["위험도"]
-        if v is None:      # 출처가 없을 때 ②처럼 '해당 없음'인 것과, AI·인터넷이 없어 '확인 불가'인 것을 나눠 보여 줘요
-            return ("➖", "해당 없음") if r["상태"] == "해당 없음" else ("➖", "확인 못 함")
-        return ("❌", "문제") if v >= 0.6 else ("⚠️", "의심") if v >= 0.3 else ("✅", "통과")
-    세기 = {}
-    for x in 결과들:
-        말 = 판정말(x["결과"])[1]
-        세기[말] = 세기.get(말, 0) + 1
-    st.markdown(f'<div class="fa-소제목">🧾 검증 항목 <small>기준 {len(결과들)}개</small></div>', unsafe_allow_html=True)
-    st.markdown('<div class="fa-항목요약">' + "".join(
-        f"<span>{아이콘} {이름} {세기[이름]}</span>" for 아이콘, 이름 in [("✅", "통과"), ("⚠️", "의심"), ("❌", "문제"), ("➖", "확인 못 함"), ("➖", "해당 없음")]
-        if 세기.get(이름)) + "</div>", unsafe_allow_html=True)
-    for x in 결과들:
-        r, 기준 = x["결과"], x["정보"]
-        아이콘, 말 = 판정말(r)
-        값 = "" if r["위험도"] is None else f" ({r['위험도']:.2f})"
-        붙임 = f" ({x['유형']})" if 섞기 and x.get("유형") else ""
-        with st.expander(f"{아이콘} {기준['번호']} {기준['이름']}{붙임} · {말}{값}"):
-            st.write(r["근거"])
-            st.caption(f"맡는 환각: {기준['맡는_환각']} · 방식: {기준['방식']} · 중요도: {중요도(기준):g}")
-            for 문장 in r["문제_문장"]:
-                st.markdown(f"- {문장}")
-    st.caption("종합 위험도 계산: " + str(종합["근거"]))
+    _소제목("목록", "검증 항목", f"기준 {len(결과들)}개")
+    st.markdown(_항목_목록(결과들, 섞기), unsafe_allow_html=True)
+    st.markdown(f'<div class="fa-계산"><b>종합 위험도 계산</b>{html.escape(str(종합["근거"]))}</div>', unsafe_allow_html=True)
 
     # 3) 어떤 환각이 의심되나요? (사실·입력·맥락 상충)
     if 종합.get("종류별"):
-        st.markdown('<div class="fa-소제목">🧭 의심되는 환각 종류</div>', unsafe_allow_html=True)
-        줄 = []
+        _소제목("과녁", "의심되는 환각 종류")
+        칸 = []
         for 종류, 값 in 종합["종류별"].items():
             값 = max(0.0, min(1.0, 값 or 0))
-            색 = "#ef4444" if 값 >= 0.6 else "#f59e0b" if 값 >= 0.3 else "#22c55e" if 값 > 0 else "#cbd5e1"
-            줄.append(f'<div class="fa-종류"><div>{html.escape(종류)}<small>{html.escape(환각_뜻.get(종류, ""))}</small></div>'
-                     f'<div class="fa-종류-줄"><span style="width:{max(값 * 100, 2):.0f}%;background:{색}"></span></div><b>{값:.2f}</b></div>')
-        st.markdown('<div class="fa-종류들">' + "".join(줄) + "</div>", unsafe_allow_html=True)
+            코 = "r" if 값 >= 0.6 else "y" if 값 >= 0.3 else "g" if 값 > 0 else "n"
+            칸.append(f'<div class="fa-종류 fa-s{코}"><div class="fa-종류-위"><span>{html.escape(종류)}</span><b>{값:.2f}</b></div>'
+                     f'<div class="fa-종류-줄"><i style="width:{값 * 100:.0f}%"></i></div>'
+                     f'<small>{html.escape(환각_뜻.get(종류, ""))}</small></div>')
+        st.markdown('<div class="fa-종류들">' + "".join(칸) + "</div>", unsafe_allow_html=True)
 
     if 보고서["상위모델_답변들"]:
-        with st.expander("🤖 교차 확인: 상위 모델들이 다시 답한 내용 보기"):
+        with _펼침("교차 확인: 상위 모델들이 다시 답한 내용 보기", ":material/forum:"):
             for i, a in enumerate(보고서["상위모델_답변들"], 1):
                 st.markdown(f"**상위 모델 {i}**")
                 st.write(a)
@@ -757,7 +984,7 @@ def _한_차례(차례, 번호, 자세히):
     _내_말풍선(보고서["질문"], 보고서["답변"], 보고서["출처"])
     with st.chat_message("assistant", avatar=로고_그림):
         if 차례.get("저장됨"):
-            st.caption("같은 입력의 저장된 결과예요. AI를 다시 부르지 않았어요. 처음부터 다시 하려면 '↻ 다시 검사'를 누르세요.")
+            st.caption("같은 입력의 저장된 결과예요. AI를 다시 부르지 않았어요. 처음부터 다시 하려면 '다시 검사'를 누르세요.")
         _등급_카드(보고서)
         if 보고서["유형"] is None:                    # 답변 거부 또는 입력 확인 필요
             if 자세히:
@@ -765,27 +992,28 @@ def _한_차례(차례, 번호, 자세히):
             return
         if 자세히:
             _결과_자세히(보고서, 번호)
-            칸1, 칸2 = st.columns(2)
-            with 칸1:
-                st.button("↻ 다시 검사", key=f"다시_{번호}", on_click=_다시_검사_누름, args=(번호,),
+            with _상자(f"fa_actions_{번호}"):
+                칸1, 칸2 = st.columns(2)
+                with 칸1:
+                    _버튼(st.button, "다시 검사", ":material/refresh:", key=f"다시_{번호}", on_click=_다시_검사_누름, args=(번호,),
                           use_container_width=True, help="저장된 결과를 버리고 AI를 다시 불러 처음부터 검사해요.")
-            with 칸2:
-                _내려받기_버튼(보고서, 번호)
+                with 칸2:
+                    _내려받기_버튼(보고서, 번호)
         else:
-            st.button("자세히 보기", key=f"펼치기_{번호}", on_click=_펼치기, args=(번호,))
+            _버튼(st.button, "자세히 보기", ":material/expand_more:", key=f"펼치기_{번호}", on_click=_펼치기, args=(번호,))
 
 
 # ------------------------------------------------------------------ 대화형 입력 (2026-11-15: ChatGPT·Gemini 처럼 아래 입력창 하나로)
 # 순서: ① 질문 → ② AI의 답변 → ③ 출처(있으면) 또는 [Fact TAP] → 검사
-# '질문: … / 답변: … / 출처: …' 처럼 한 번에 붙여 넣으면 알아서 나눠요. '📝 한 번에 입력'(창)으로 넣어도 돼요.
-화면_버전 = "2026-11-16 대화형"       # 화면을 고칠 때마다 날짜를 바꾸면, 새 화면이 올라갔는지 바로 알 수 있어요
-예시들 = [   # 첫 화면 '예시로 해 보기' 카드: (제목, 질문, 답변). 깔끔하게 보이도록 이모티콘은 넣지 않아요
-    ("역사 사실 확인", "세종대왕이 훈민정음을 반포한 해는 언제인가요?",
+# '질문: … / 답변: … / 출처: …' 처럼 한 번에 붙여 넣으면 알아서 나눠요. '한 번에 입력'(창)으로 넣어도 돼요.
+화면_버전 = "2026-11-16 디자인"       # 화면을 고칠 때마다 날짜를 바꾸면, 새 화면이 올라갔는지 바로 알 수 있어요
+예시들 = [   # 첫 화면 '예시로 해 보기' 카드: (제목, 꼬리표, 질문, 답변). 깔끔하게 보이도록 이모티콘은 넣지 않아요
+    ("역사 사실 확인", "사실 지식형", "세종대왕이 훈민정음을 반포한 해는 언제인가요?",
      "세종대왕은 1443년에 훈민정음을 반포했습니다. 백성이 글을 쉽게 익히도록 만든 글자입니다."),
-    ("계산 검산", "학생 5명의 수학 점수 평균이 72점입니다. 학생 1명이 더 들어와 6명의 평균이 75점이 되었다면, 새로 들어온 학생의 점수는 몇 점인가요?",
+    ("계산 검산", "수치 계산형", "학생 5명의 수학 점수 평균이 72점입니다. 학생 1명이 더 들어와 6명의 평균이 75점이 되었다면, 새로 들어온 학생의 점수는 몇 점인가요?",
      "새로 들어온 학생의 점수는 93점입니다.\n1. 처음 5명의 총점: 72 × 5 = 360점\n2. 6명이 된 후 총점: 75 × 6 = 450점\n3. 새로 들어온 학생의 점수: 450 - 360 = 93점"),
-    ("논리 추론 따지기", "A는 B의 아버지이고, B는 C의 아버지입니다. C는 A의 무엇인가요?", "C는 A의 손자입니다."),
-    ("코드 결과 확인", "다음 Python 코드를 실행하면 무엇이 출력되나요?\n\nd = {\"사과\": 3, \"배\": 5}\nd[\"사과\"] += 2\nd[\"귤\"] = 1\nprint(len(d), d[\"사과\"])",
+    ("논리 추론 따지기", "논리 추론형", "A는 B의 아버지이고, B는 C의 아버지입니다. C는 A의 무엇인가요?", "C는 A의 손자입니다."),
+    ("코드 결과 확인", "코드 결과형", "다음 Python 코드를 실행하면 무엇이 출력되나요?\n\nd = {\"사과\": 3, \"배\": 5}\nd[\"사과\"] += 2\nd[\"귤\"] = 1\nprint(len(d), d[\"사과\"])",
      "출력 결과는 4 5 입니다. 딕셔너리에 귤이 추가되어 길이가 4가 됩니다."),
 ]
 _머리말 = re.compile(r"^[ \t]*(질문|Q|AI의 답변|AI 답변|답변|A|출처|S)[ \t]*[:：][ \t]*", re.M | re.I)
@@ -804,6 +1032,35 @@ def _한번에_나누기(글):
         if 이름 not in 칸:
             칸[이름] = 글[m.end():끝].strip()
     return 칸 if 칸.get("질문") and 칸.get("답변") else None
+
+
+def _팝업(글, 아이콘=None):
+    """st.popover + 작은 그림(아이콘). 오래된 Streamlit 이면 그림 없이."""
+    try:
+        return st.popover(글, icon=아이콘)
+    except TypeError:
+        return st.popover(글)
+
+
+def _진행_글(글):
+    """검사 중 단계 글 ('2단계: …') → 동그라미 번호 + 글 (지난 단계는 CSS 가 체크로 바꿔요)"""
+    m = re.match(r"\s*(\d+)\s*단계\s*[:：]\s*(.*)", str(글), re.S)
+    번호, 내용 = (m.group(1), m.group(2)) if m else ("·", str(글))
+    return f'<div class="fa-진행"><span class="fa-진행-표">{번호}</span><span>{html.escape(내용)}</span></div>'
+
+
+def _라벨_글(글):
+    """버튼 글자에서 마크다운 기호(*, _, #, '1.' 같은 번호, $ 등)가 꾸밈으로 바뀌지 않게 앞에 역슬래시를 붙여요"""
+    return re.sub(r"([\\`*_{}\[\]()#+\-.!|~:$<>])", r"\\\1", str(글))
+
+
+def _탭_그림():
+    """브라우저 탭의 작은 그림: FactAP 로고 (도구/아이콘/FactAP.ico). 없으면 돋보기"""
+    try:
+        from PIL import Image
+        return Image.open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "도구", "아이콘", "FactAP.ico"))
+    except Exception:
+        return "🔎"
 
 
 def _처음부터():
@@ -827,7 +1084,7 @@ def _다시_검사_누름(번호):
 
 
 def _예시_고름(번호):
-    _, 질문, 답변 = 예시들[번호]
+    _, _, 질문, 답변 = 예시들[번호]
     st.session_state["임시"] = {"질문": 질문, "답변": 답변}
     st.session_state["단계"] = "출처"
 
@@ -841,28 +1098,28 @@ def _AI_쓰나(키있음):
 
 
 def _모드_글(키있음):
-    return "🔬 정밀 검사" if _AI_쓰나(키있음) else "⚡ 간이 검사"
+    return "정밀 검사" if _AI_쓰나(키있음) else "간이 검사"
 
 
 def _모드_고르기(키있음):
     """ChatGPT 의 '모델 고르기'처럼: 정밀(AI 사용) / 간이(AI 없이) + 남은 크레딧"""
-    with st.popover(_모드_글(키있음)):
+    with _팝업(_모드_글(키있음), ":material/science:" if _AI_쓰나(키있음) else ":material/bolt:"):
         st.markdown('<div class="fa-팝제목">검사 모드</div>', unsafe_allow_html=True)
         if 키있음:
             st.radio("검사 모드", ["정밀", "간이"], key="모드", label_visibility="collapsed",
-                     format_func=lambda 값: {"정밀": "🔬 정밀 검사", "간이": "⚡ 간이 검사"}[값],
+                     format_func=lambda 값: {"정밀": "정밀 검사", "간이": "간이 검사"}[값],
                      captions=["상위 AI 3개에게 다시 묻고 검사 AI·위키백과·논문까지 대조해요. 1~2분, 한 번에 약 $0.05",
                                "AI 없이 프로그램으로 확인하는 기준만 써요. 몇 초, 무료. 사실·출처형은 놓치기 쉬워요"])
         else:
-            st.caption("API 키가 없어서 지금은 ⚡ 간이 검사(AI 없이 프로그램 기준만)로 해요. "
-                       "키를 넣으면 🔬 정밀 검사를 고를 수 있어요. (README 'API 키 넣기')")
+            st.caption("API 키가 없어서 지금은 간이 검사(AI 없이 프로그램 기준만)로 해요. "
+                       "키를 넣으면 정밀 검사를 고를 수 있어요. (README 'API 키 넣기')")
         st.divider()
         _크레딧_내용(키있음)
 
 
 def _유형_고르기():
-    with st.popover("🏷️ " + ("유형 자동" if st.session_state.get("유형_입력", "유형 자동 분류") == "유형 자동 분류"
-                             else st.session_state["유형_입력"])):
+    with _팝업(("유형 자동" if st.session_state.get("유형_입력", "유형 자동 분류") == "유형 자동 분류"
+                             else st.session_state["유형_입력"]), ":material/sell:"):
         st.markdown('<div class="fa-팝제목">답변 유형</div>', unsafe_allow_html=True)
         st.selectbox("답변 유형", ["유형 자동 분류"] + 설정.유형목록, key="유형_입력", label_visibility="collapsed")
         st.caption("보통은 자동 분류로 두면 돼요. 분류가 애매하면 두 유형으로 모두 검사해서 확률로 섞어요.")
@@ -886,9 +1143,9 @@ def _한번에_창():
                 st.session_state["바로_요청"] = {"질문": 질문, "답변": 답변, "출처": 출처}
                 st.rerun()
     if hasattr(st, "dialog"):
-        st.dialog("📝 한 번에 입력하기", width="large")(내용)()
+        st.dialog("한 번에 입력하기", width="large")(내용)()
     else:
-        with st.expander("📝 한 번에 입력하기", expanded=True):
+        with st.expander("한 번에 입력하기", expanded=True):
             내용()
 
 
@@ -902,7 +1159,7 @@ def _입력_도구줄(키있음):
     with 줄:
         _모드_고르기(키있음)
         _유형_고르기()
-        if st.button("📝 한 번에 입력", key="한번에_버튼"):
+        if _버튼(st.button, "한 번에 입력", ":material/edit_note:", key="한번에_버튼"):
             _한번에_창()
 
 
@@ -957,13 +1214,16 @@ def _옆_메뉴():
             st.button("＋ 새 검사", on_click=_새_검사, use_container_width=True)
         st.markdown('<div class="fa-옆제목">최근 검사</div>', unsafe_allow_html=True)
         대화 = st.session_state.get("대화") or []
+        펼친 = st.session_state.get("펼친")
+        펼친 = len(대화) - 1 if 펼친 is None else 펼친
         if not 대화:
             st.markdown('<div class="fa-옆빈칸">아직 검사한 답변이 없어요.</div>', unsafe_allow_html=True)
         for 번호 in range(len(대화) - 1, -1, -1):
             보고서 = 대화[번호]["보고서"]
             등급 = (보고서["종합"] or {}).get("등급", "")
             제목 = " ".join(str(보고서["질문"]).split())[:28] or "(질문 없음)"
-            st.button(f"{등급_표시.get(등급, '⚪')} {제목}", key=f"최근_{번호}", on_click=_펼치기, args=(번호,),
+            st.button(_라벨_글(제목), key=f"fa_rec_{등급_코드.get(등급, 'n')}_{'on_' if 번호 == 펼친 else ''}{번호}",
+                      on_click=_펼치기, args=(번호,),
                       use_container_width=True, help=f"{등급} · {보고서.get('시각', '')}")
         st.markdown('<div class="fa-옆제목">도움말</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="fa-옆빈칸">아래 입력창에 <b>질문 → AI의 답변</b> 순서로 넣으면 돼요. '
@@ -984,15 +1244,15 @@ def _첫_화면(키있음):
     st.markdown('<div class="fa-예시제목">예시로 해 보기</div>', unsafe_allow_html=True)
     with _상자("fa_examples"):
         칸들 = st.columns(2)
-        for 번호, (제목, 질문, _) in enumerate(예시들):
+        for 번호, (제목, 꼬리표, 질문, _) in enumerate(예시들):
             with 칸들[번호 % 2]:
-                st.button(f"**{제목}**  \n*{_줄이기(' '.join(질문.split()), 34)}*", key=f"예시_{번호}",
+                st.button(f"`{꼬리표}` **{제목}**  \n*{_줄이기(' '.join(질문.split()), 34)}*", key=f"예시_{번호}",
                           on_click=_예시_고름, args=(번호,), use_container_width=True)
     st.markdown(f"""
 <div class="fa-찾는것">이런 환각을 찾아요 · <b>사실 상충</b> {환각_뜻["사실 상충"]} · <b>입력 상충</b> {환각_뜻["입력 상충"]} ·
 <b>맥락 상충</b> {환각_뜻["맥락 상충"]}</div>""", unsafe_allow_html=True)
     if not 키있음:
-        st.caption("지금은 API 키가 없어 ⚡ 간이 검사(AI 없이 프로그램 기준만)로 해요. (README의 'API 키 넣기')")
+        st.caption("지금은 API 키가 없어 간이 검사(AI 없이 프로그램 기준만)로 해요. (README의 'API 키 넣기')")
 
 
 def _진행_중_대화(키있음):
@@ -1004,7 +1264,7 @@ def _진행_중_대화(키있음):
     if 단계 == "답변":
         with st.chat_message("assistant", avatar=로고_그림):
             st.markdown("좋아요! 이 질문에 **AI가 뭐라고 답했나요?** 아래 입력창에 답변을 그대로 붙여 넣어 주세요.")
-            st.button("↩ 처음부터", key="처음부터_1", on_click=_처음부터)
+            _버튼(st.button, "처음부터", ":material/undo:", key="처음부터_1", on_click=_처음부터)
         return
     with st.chat_message("user"):
         st.markdown('<div class="fa-말">AI의 답변</div>', unsafe_allow_html=True)
@@ -1023,13 +1283,13 @@ def _진행_중_대화(키있음):
                 except TypeError:
                     st.button(검사_버튼_이름, key="바로_검사_버튼", type="primary", on_click=_바로_검사_누름, use_container_width=True)
             with 칸2:
-                st.button("↩ 처음부터", key="처음부터_2", on_click=_처음부터, use_container_width=True)
+                _버튼(st.button, "처음부터", ":material/undo:", key="처음부터_2", on_click=_처음부터, use_container_width=True)
         st.caption(f"{_모드_글(키있음)} · 유형: {st.session_state.get('유형_입력', '유형 자동 분류')}"
                    + (" · 1~2분 걸려요" if _AI_쓰나(키있음) else " · 몇 초면 끝나요"))
 
 
 # ------------------------------------------------------------------ 화면
-st.set_page_config(page_title=앱_이름, page_icon="🔎", layout="centered")
+st.set_page_config(page_title=앱_이름, page_icon=_탭_그림(), layout="centered")
 _화면_꾸미기()
 _소개_메뉴()
 st.session_state.setdefault("대화", [])
@@ -1041,7 +1301,7 @@ _옆_메뉴()
 _입력_도구줄(키있음)
 보낸_글 = st.chat_input(_자리글(), key="채팅_입력")
 
-# 이번에 할 검사 정하기: 입력창, Fact TAP, 한 번에 입력, 또는 결과 아래 '↻ 다시 검사'
+# 이번에 할 검사 정하기: 입력창, Fact TAP, 한 번에 입력, 또는 결과 아래 '다시 검사'
 요청 = _입력_받기(보낸_글, 키있음) if 보낸_글 else None
 if st.session_state.pop("바로_검사", False) and st.session_state["임시"].get("답변"):
     임시 = st.session_state["임시"]
@@ -1070,9 +1330,9 @@ if 요청:
         보고서 = 저장된_결과(열쇠)
         저장됨 = bool(보고서)
         if not 보고서:
-            상태 = st.status("🔎 사실 확인하는 중…" + (" (1~2분)" if 요청["AI_사용"] else ""), expanded=True)
+            상태 = st.status("사실 확인하는 중…" + (" (1~2분)" if 요청["AI_사용"] else ""), expanded=True)
             보고서 = 환각_검사(요청["질문"], 요청["답변"], 요청["출처"], 요청["유형"], 요청["AI_사용"],
-                          진행_알림=lambda 글: 상태.write(글))
+                          진행_알림=lambda 글: 상태.markdown(_진행_글(글), unsafe_allow_html=True))
             상태.update(label="검증 완료", state="complete", expanded=False)
             기록_남기기(보고서)                      # 설정.기록_저장 이 True면 기록/검사기록.jsonl 에 저장
             if not any("AI 호출이 실패" in 글 for 글 in 보고서["알림"]) and not 보고서.get("저장_안_함"):

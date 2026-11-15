@@ -24,7 +24,7 @@
   OPENROUTER_API_KEY = "sk-or-로 시작하는 키"
   DAILY_AI_LIMIT = 30                 # (선택) 하루 AI 검사 한도. 안 넣으면 30
   APP_PASSWORD = "비밀번호"            # (선택) 넣으면 비밀번호를 아는 사람만 들어올 수 있어요
-  APP_URL = "https://○○○.streamlit.app"  # (선택) 오른쪽 위 📤 공유 메뉴가 앱 주소를 못 찾을 때만 (비밀 아님)
+  APP_URL = "https://○○○.streamlit.app"  # (선택) 오른쪽 위 공유 메뉴가 앱 주소를 못 찾을 때만 (비밀 아님)
 """
 import datetime
 import os
@@ -86,7 +86,7 @@ def _AI_검사_한_번_쓰기():
 
 
 def _오늘_AI_검사_횟수():
-    """(오늘 쓴 AI 검사 횟수, 하루 한도). 앱 화면의 '🔬 정밀 검사' 메뉴(API 크레딧)에 보여 줘요."""
+    """(오늘 쓴 AI 검사 횟수, 하루 한도). 앱 화면의 '정밀 검사' 메뉴(API 크레딧)에 보여 줘요."""
     사용량 = _오늘_사용량()
     오늘 = datetime.datetime.now(한국_시간).date()
     with 사용량["잠금"]:
@@ -119,7 +119,16 @@ def 한도_있는_환각_검사(질문, 답변, 출처="", 유형=None, AI_사�
 # ------------------------------------------------------------------ 화면 설정 (앱_화면.py 보다 먼저 해야 해서 여기서)
 원래_페이지_설정 = vars(st).get("_원래_페이지_설정", st.set_page_config)
 st._원래_페이지_설정 = 원래_페이지_설정
-원래_페이지_설정(page_title="FactAP", page_icon="🔎", layout="centered")
+def _탭_그림():
+    """브라우저 탭의 작은 그림: FactAP 로고 (도구/아이콘/FactAP.ico). 없으면 돋보기 (2026-11-16)"""
+    try:
+        from PIL import Image          # Streamlit 을 설치하면 함께 깔려요
+        return Image.open(os.path.join(폴더, "도구", "아이콘", "FactAP.ico"))
+    except Exception:
+        return "🔎"
+
+
+원래_페이지_설정(page_title="FactAP", page_icon=_탭_그림(), layout="centered")
 st.set_page_config = lambda *a, **k: None      # 앱_화면.py 안의 같은 설정은 건너뛰어요 (두 번 하면 오류가 날 수 있어서)
 
 # ------------------------------------------------------------------ 4) 접속 비밀번호 (APP_PASSWORD 를 넣었을 때만)
