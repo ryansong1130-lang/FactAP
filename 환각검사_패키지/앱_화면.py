@@ -33,6 +33,8 @@
         결과가 나올 때 카드가 살짝 떠오르고 막대가 자라나요 (기기에서 '움직임 줄이기'를 켜면 움직이지 않아요).
         계기판·막대 색과 '통과·의심·문제' 이름은 보여 주기만 할 뿐, 점수 계산(검사_실행.py, 설정.py)과는 상관없어요.
   로고는 '검증'을 뜻하는 방패 + 체크, 색은 파랑 → 청록이에요 (.streamlit/config.toml 의 primaryColor 도 같은 파랑).
+  2026-11-16 글자색: 기기가 어두운 모드여도 글자색·바탕색을 밝은 화면 색으로 고정해요 (테마 파일이 없어도 입력칸 글씨, 말풍선,
+        작은 설명 글, 메뉴 창, 도움말 글상자가 잘 보이게). _화면_꾸미기() 의 '기기가 어두운 모드여도' 부분이에요.
   유형이 애매하면 두 유형으로 모두 검사해 확률로 섞은 결과와 각 유형의 확률을 보여 줘요 (검사_실행.유형_섞기).
   같은 질문·답변·출처·유형·AI 사용으로 다시 검사하면 저장된 결과를 보여 주고 AI를 다시 부르지 않아요.
   '다시 검사'를 누르면 저장된 결과를 버리고 처음부터 검사해요. AI 호출이 일부 실패한 결과는 저장하지 않아요.
@@ -289,7 +291,7 @@ def _화면_꾸미기():
     st.markdown("""
 <style>
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
-:root { --fa-글: #1f2328; --fa-흐림: #6b7280; --fa-선: #e5e7eb; --fa-면: #f4f4f5; --fa-강조: #1d4ed8; --fa-강조2: #0d9488;
+:root { --fa-글: #1f2328; --fa-흐림: #5b6370; --fa-선: #e5e7eb; --fa-면: #f4f4f5; --fa-강조: #1d4ed8; --fa-강조2: #0d9488;
   --fa-초록: #15803d; --fa-노랑: #b45309; --fa-빨강: #b91c1c; }
 /* 글꼴 (아이콘 글꼴이 있는 span 은 건드리지 않음) */
 .stApp, .stApp p, .stApp li, .stApp label, .stApp textarea, .stApp input, .stApp button, .stApp summary,
@@ -354,7 +356,7 @@ def _화면_꾸미기():
 /* ====== 검증 리포트 (2026-11-16 디자인): 위험도 계기판 + 판정 + 기준 막대, 결과가 나올 때 부드럽게 떠오름 ====== */
 /* 색 이름: g 통과·문제 없음(초록), y 의심·보통(주황), r 문제·위험(빨강), m 확인 못 함(진한 회색), n 해당 없음(회색) */
 .fa-sg { --s: #22c55e; --s진: #15803d; --s연: #dcfce7; } .fa-sy { --s: #f59e0b; --s진: #b45309; --s연: #fef3c7; }
-.fa-sr { --s: #ef4444; --s진: #b91c1c; --s연: #fee2e2; } .fa-sn { --s: #cbd5e1; --s진: #64748b; --s연: #f1f5f9; }
+.fa-sr { --s: #ef4444; --s진: #b91c1c; --s연: #fee2e2; } .fa-sn { --s: #cbd5e1; --s진: #556070; --s연: #f1f5f9; }
 .fa-sm { --s: #94a3b8; --s진: #475569; --s연: #e2e8f0; }
 @keyframes fa-떠오름 { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @keyframes fa-바늘 { from { transform: rotate(0deg); } }
@@ -528,7 +530,7 @@ body:has([data-testid="stDialog"]) [data-testid="stPopoverBody"] { display: none
 @keyframes fa-둥실 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 .fa-인사-큰 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.035em; line-height: 1.2;
   background: linear-gradient(92deg, #1d4ed8 0%, #0d9488 55%, #7c3aed 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.fa-인사-작은 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; color: #9ca3af; margin-top: 0.15rem; }
+.fa-인사-작은 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; color: #6b7280; margin-top: 0.15rem; }
 .fa-특징 { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem; margin-top: 1.3rem; }
 .fa-특징 span { font-size: 0.82rem; padding: 0.28rem 0.75rem; border-radius: 999px; background: #f1f5f9; color: #334155; }
 .fa-예시제목 { font-size: 0.8rem; font-weight: 700; color: var(--fa-흐림); margin: 0.4rem 0 0.1rem 0.2rem; }
@@ -543,7 +545,7 @@ body:has([data-testid="stDialog"]) [data-testid="stPopoverBody"] { display: none
 .st-key-fa_examples .stButton button em { font-style: normal; }
 .fa-찾는것 { text-align: center; font-size: 0.78rem; color: var(--fa-흐림); margin: 1rem 0 0.4rem 0; word-break: keep-all; line-height: 1.7; }
 .fa-찾는것 b { color: #334155; }
-.fa-버전 { font-size: 0.7rem; color: #9ca3af; margin: 1.4rem 0 0 0.7rem; }
+.fa-버전 { font-size: 0.7rem; color: #6b7280; margin: 1.4rem 0 0 0.7rem; }
 .fa-팝제목 { font-weight: 800; font-size: 0.95rem; margin-bottom: 0.2rem; }
 .st-key-fa_flow .stButton button[kind="primary"], .st-key-fa_flow [data-testid="stBaseButton-primary"] {
   background: linear-gradient(90deg, var(--fa-강조), var(--fa-강조2)); border: none; font-weight: 700; min-height: 2.6rem; }
@@ -628,6 +630,79 @@ body:has([data-testid="stDialog"]) [data-testid="stPopoverBody"] { display: none
   vertical-align: 0.1rem; background: linear-gradient(135deg, var(--fa-강조), var(--fa-강조2)); }
 .st-key-fa_examples .stButton button code { font-family: inherit !important; font-size: 0.7rem; font-weight: 700; color: var(--fa-강조);
   background: #eff6ff; border: none; border-radius: 999px; padding: 0.12rem 0.5rem; margin-right: 0.2rem; vertical-align: 0.08rem; }
+/* ====== 기기가 어두운 모드여도 늘 밝은 화면 (2026-11-16 글자색) ======
+   테마 파일(.streamlit/config.toml)이 없으면 Streamlit 은 기기 설정(어두운 모드)을 따라 밝은 글자색을 써요.
+   그러면 하얀 바탕 위에 밝은 글자가 올라가 잘 안 보여서, 글자색과 바탕색을 여기서 직접 정해 둬요. */
+html, body, .stApp { color-scheme: light; }
+body { background: #ffffff; color: var(--fa-글); }
+/* 일반 글자: 말풍선, 설명 글, 펼치기, 메뉴 창, 입력 이름표, 표, 제목 */
+[data-testid="stChatMessageContent"], [data-testid="stText"], [data-testid="stExpander"] details, [data-testid="stExpander"] summary,
+[data-testid="stExpanderDetails"], [data-testid="stPopoverBody"], [data-testid="stWidgetLabel"], [data-testid="stMetricLabel"],
+[data-testid="stMetricValue"], [data-testid="stRadio"] label, [data-testid="stSidebarContent"], [data-testid="stDialog"] [role="dialog"],
+[data-testid="stMarkdownContainer"] :is(h1, h2, h3, h4, h5, h6, th, td, blockquote) { color: var(--fa-글) !important; }
+[data-testid="stMarkdownContainer"]:not(button *):not([data-testid="stAlertContainer"] *):not([data-testid="stCaptionContainer"] *) { color: var(--fa-글) !important; }
+[data-testid="stText"] span { color: inherit !important; }
+[data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p, [data-testid="InputInstructions"] { color: var(--fa-흐림) !important; }
+[data-testid="stCaptionContainer"] { opacity: 1 !important; }      /* Streamlit 은 작은 설명 글을 60%만 보이게 해서 더 흐려져요 */
+[data-testid="stMarkdownContainer"] :is(th, td) { border-color: var(--fa-선) !important; }
+[data-testid="stMarkdownContainer"] th { background: #f8fafc !important; }
+[data-testid="stMarkdownContainer"] a { color: var(--fa-강조) !important; }
+[data-testid="stMarkdownContainer"]:not(button *) code, [data-testid="stCaptionContainer"] code { color: #0f766e !important; background: #f1f5f9 !important; }
+/* 아이콘(펼치기 화살표, 옆 메뉴 접기, 창 닫기 X, 위 막대) */
+[data-testid="stExpander"] summary [data-testid="stIconMaterial"], [data-testid="stExpander"] summary svg { color: inherit !important; }
+[data-testid="stSidebarCollapseButton"] button, [data-testid="stExpandSidebarButton"], [data-testid="stHeader"] button,
+[data-testid="stDialog"] button[aria-label="Close"] { color: #4b5563 !important; }
+[data-testid="stIconMaterial"] { color: inherit !important; }
+[data-testid="stExpander"] summary { background-color: transparent !important; }
+[data-testid="stExpander"] summary:hover { background-color: #f8fafc !important; }
+/* 바탕: 메뉴 창, 큰 창, 고르기 목록, ⋮ 메뉴 */
+[data-testid="stPopoverBody"], [data-testid="stDialog"] [role="dialog"], [data-testid="stMainMenuPopover"],
+[data-baseweb="popover"] ul[role="listbox"], [data-baseweb="popover"] [role="option"] { background-color: #ffffff !important; }
+[data-testid="stPopoverBody"], [data-testid="stDialog"] [role="dialog"] { border-color: var(--fa-선) !important; }
+[data-testid="stDialog"] [role="dialog"] { box-shadow: 0 12px 40px rgba(15, 23, 42, 0.16) !important; }
+[data-testid="stTooltipContent"] { background-color: #f8fafc !important; color: var(--fa-글) !important; border: 1px solid var(--fa-선);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.10); }
+[data-baseweb="popover"] [role="option"], [data-testid="stMainMenuPopover"] * { color: var(--fa-글) !important; }
+[data-baseweb="popover"] [role="option"]:hover, [data-baseweb="popover"] [role="option"][aria-selected="true"] { background-color: #eff6ff !important; }
+/* 입력칸: 쓴 글씨는 진하게, 안내 글은 흐리게, 깜박이는 막대는 파랑 */
+textarea, input { color: var(--fa-글) !important; -webkit-text-fill-color: var(--fa-글) !important; caret-color: var(--fa-강조) !important; }
+textarea::placeholder, input::placeholder { color: #80868f !important; -webkit-text-fill-color: #80868f !important; opacity: 1 !important; }
+[data-baseweb="input"], [data-baseweb="base-input"], [data-baseweb="textarea"], [data-baseweb="select"] > div,
+[data-testid="stTextInputRootElement"], [data-testid="stTextAreaRootElement"] { background-color: #f8f9fb !important; border-color: var(--fa-선) !important; }
+[data-testid="stForm"] [data-testid="stTextAreaRootElement"] { border: 1px solid transparent !important; border-radius: 14px !important; }
+[data-testid="stTextInputRootElement"]:focus-within, [data-testid="stTextAreaRootElement"]:focus-within { border-color: #93c5fd !important; }
+[data-baseweb="select"] div, [data-baseweb="select"] span, [data-baseweb="select"] svg { color: var(--fa-글) !important; }
+[data-testid="stSelectbox"] [role="group"] { background-color: #f8f9fb !important; border-color: var(--fa-선) !important; color: var(--fa-글) !important; }
+[data-testid="stSelectbox"] [role="group"] * { color: var(--fa-글) !important; }
+[data-testid="stSelectboxVirtualDropdown"], [role="listbox"] { background-color: #ffffff !important; color: var(--fa-글) !important; border-color: var(--fa-선) !important; }
+[role="listbox"] [role="option"] { color: var(--fa-글) !important; }
+[role="listbox"] [role="option"]:hover, [role="listbox"] [role="option"][aria-selected="true"], [role="listbox"] [role="option"][data-focused="true"] {
+  background-color: #eff6ff !important; }
+/* 버튼 (흰 버튼은 흰 바탕에 진한 글자) */
+[data-testid="stBaseButton-secondary"], [data-testid="stPopoverButton"], [data-testid="stBaseButton-secondaryFormSubmit"] {
+  background-color: #ffffff; color: var(--fa-글); border-color: #d4d4d8; }
+[data-testid="stBaseButton-primary"] { color: #ffffff !important; }
+/* 고르기 동그라미, 막대, 구분선, 코드 상자, 알림 상자 */
+[data-testid="stRadioOption"] > div > div:first-child { background-color: #ffffff !important; border: 1px solid #9ca3af !important; }
+[data-testid="stRadioOption"]:not(:has(input:checked)) > div > div:first-child > div { background-color: transparent !important; }
+[data-testid="stRadioOption"]:has(input:checked) > div > div:first-child { background-color: var(--fa-강조) !important; border-color: var(--fa-강조) !important; }
+[data-testid="stRadioOption"]:has(input:checked) > div > div:first-child > div { background-color: #ffffff !important; }
+[data-testid="stProgressBarTrack"] { background-color: #e5e7eb !important; }
+[data-testid="stProgressBarTrack"] > div { background: linear-gradient(90deg, var(--fa-강조), var(--fa-강조2)) !important; }
+hr, [data-testid="stDivider"] hr { border-color: var(--fa-선) !important; background-color: var(--fa-선) !important; }
+[data-testid="stCode"] pre, [data-testid="stCode"] code { background-color: #f4f4f5 !important; color: var(--fa-글) !important; }
+[data-testid="stCode"] button { color: var(--fa-흐림) !important; background: transparent !important; }
+div:has(> [data-testid="stElementToolbarButton"]) { background-color: #ffffff !important; border: 1px solid var(--fa-선); }
+[data-testid="stElementToolbarButton"], [data-testid="stElementToolbarButton"] button { color: var(--fa-흐림) !important; }
+[data-testid="stAlertContainer"] { color: var(--fa-글) !important; }
+[data-testid="stAlertContainer"]:has([data-testid="stAlertContentInfo"]) { background-color: #eff6ff !important; }
+[data-testid="stAlertContainer"]:has([data-testid="stAlertContentSuccess"]) { background-color: #f0fdf4 !important; }
+[data-testid="stAlertContainer"]:has([data-testid="stAlertContentWarning"]) { background-color: #fffbeb !important; }
+[data-testid="stAlertContainer"]:has([data-testid="stAlertContentError"]) { background-color: #fef2f2 !important; }
+[data-testid="stAlertContentInfo"], [data-testid="stAlertContentInfo"] * { color: #1e3a8a !important; }
+[data-testid="stAlertContentSuccess"], [data-testid="stAlertContentSuccess"] * { color: #14532d !important; }
+[data-testid="stAlertContentWarning"], [data-testid="stAlertContentWarning"] * { color: #78350f !important; }
+[data-testid="stAlertContentError"], [data-testid="stAlertContentError"] * { color: #7f1d1d !important; }
 /* 버튼에 마우스를 올리거나 누를 때 색: 테마 파일(.streamlit/config.toml)이 없어도 Streamlit 기본 빨강 대신 FactAP 파랑 */
 .stButton button:not([kind="primary"]):hover, [data-testid="stDownloadButton"] button:hover, [data-testid="stPopover"] button:hover,
 .stButton button:not([kind="primary"]):focus-visible, [data-testid="stPopover"] button:focus-visible {
@@ -1006,7 +1081,7 @@ def _한_차례(차례, 번호, 자세히):
 # ------------------------------------------------------------------ 대화형 입력 (2026-11-15: ChatGPT·Gemini 처럼 아래 입력창 하나로)
 # 순서: ① 질문 → ② AI의 답변 → ③ 출처(있으면) 또는 [Fact TAP] → 검사
 # '질문: … / 답변: … / 출처: …' 처럼 한 번에 붙여 넣으면 알아서 나눠요. '한 번에 입력'(창)으로 넣어도 돼요.
-화면_버전 = "2026-11-16 디자인"       # 화면을 고칠 때마다 날짜를 바꾸면, 새 화면이 올라갔는지 바로 알 수 있어요
+화면_버전 = "2026-11-16 글자색"       # 화면을 고칠 때마다 날짜를 바꾸면, 새 화면이 올라갔는지 바로 알 수 있어요
 예시들 = [   # 첫 화면 '예시로 해 보기' 카드: (제목, 꼬리표, 질문, 답변). 깔끔하게 보이도록 이모티콘은 넣지 않아요
     ("역사 사실 확인", "사실 지식형", "세종대왕이 훈민정음을 반포한 해는 언제인가요?",
      "세종대왕은 1443년에 훈민정음을 반포했습니다. 백성이 글을 쉽게 익히도록 만든 글자입니다."),
