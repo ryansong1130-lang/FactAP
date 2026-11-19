@@ -42,6 +42,8 @@
 """
 import os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from concurrent.futures import ThreadPoolExecutor
+
 from 도구.결과 import 결과, 해당없음, 확인불가
 from 도구.글_도구 import 문장_나누기, 덮는_비율, 숫자_뽑기
 from 도구 import 웹_도구, AI_호출
@@ -54,8 +56,9 @@ def 출처_글_모으기(출처):
     """출처 칸에서 링크와 붙여 넣은 글을 나눠 본문 글을 모음. (본문 목록, 열지 못한 링크 목록)"""
     링크들 = re.findall(r"https?://[^\s<>\"')\]]+", 출처 or "")
     본문들, 실패 = [], []
-    for 주소 in 링크들[:5]:
-        글 = 웹_도구.웹_글_가져오기(주소)
+    with ThreadPoolExecutor(max_workers=5) as 일꾼:            # 링크 여러 개를 한꺼번에 열기 (순서는 그대로)
+        글들 = list(일꾼.map(웹_도구.웹_글_가져오기, 링크들[:5]))
+    for 주소, 글 in zip(링크들[:5], 글들):
         (본문들.append(글) if 글 and len(글) > 100 else 실패.append(주소))
     남은글 = re.sub(r"https?://\S+", " ", 출처 or "").strip()
     if len(남은글) >= 50:
@@ -107,8 +110,14 @@ def 검사(자료):
         return 결과(None, 해당없음, "확인할 만한 문장이 없어요.")
     검사모델 = (자료.get("검사모델") or [None])[0]
     AI사용 = bool(검사모델 and AI_호출.키가_있나())
+    물을것 = [줄 for 줄 in 판정표 if AI사용 and 줄["1차"] != "비슷한 내용 있음"]
     for 줄 in 판정표:
-        줄["2차"] = _AI_판정(줄["문장"], 줄["출처부분"], 검사모델) if AI사용 and 줄["1차"] != "비슷한 내용 있음" else None
+        줄["2차"] = None
+    if 물을것:                                                # 문장마다 검사 AI에게 묻는 것을 한꺼번에 (순서는 그대로)
+        with ThreadPoolExecutor(max_workers=5) as 일꾼:
+            답들 = list(일꾼.map(lambda 줄: _AI_판정(줄["문장"], 줄["출처부분"], 검사모델), 물을것))
+        for 줄, 답 in zip(물을것, 답들):
+            줄["2차"] = 답
     if AI사용:
         반대 = sum(줄["2차"] == "반대" for 줄 in 판정표)
         언급없음 = sum(줄["2차"] == "언급 없음" or (줄["2차"] is None and 줄["1차"] == "출처에 없음") for 줄 in 판정표)

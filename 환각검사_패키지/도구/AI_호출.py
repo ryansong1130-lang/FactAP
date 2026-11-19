@@ -79,6 +79,8 @@ def AI_부르기(모델_ID, 질문, 온도=None, 최대_토큰=None):
             "max_tokens": 최대_토큰 or 설정.최대_토큰}
     if 온도 is not None:
         내용["temperature"] = 온도
+    if getattr(설정, "AI_빠른_서버_우선", False):
+        내용["provider"] = {"sort": "throughput"}       # 같은 모델 중 가장 빠른 서버로 (설정.py 참고)
     재시도 = getattr(설정, "AI_재시도_횟수", 0)
     for 번째 in range(재시도 + 1):
         요청 = urllib.request.Request(

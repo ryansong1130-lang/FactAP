@@ -12,6 +12,7 @@
       → {"제목": "Computing Machinery and Intelligence", "연도": "1950", "학술지": "Mind", ...}
 """
 import os, re, sys
+from concurrent.futures import ThreadPoolExecutor
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from 도구.글_도구 import 마크다운_지우기, 비슷한_정도
 from 도구 import 웹_도구
@@ -129,3 +130,13 @@ def 찾아보기(자료하나):
     if DOI결과 is False:
         판정 = "DOI 없음"
     return {"판정": 판정, "찾은_논문": 최고, "비슷한_정도": round(점수, 2)}
+
+
+def 여러개_찾아보기(목록):
+    """자료 여러 개를 한꺼번에 찾아봄 (하나씩 차례로 찾으면 오래 걸려서). 돌려주는 순서는 목록 순서와 같아요.
+    돌려주는 값: [{"자료": 자료하나, "판정": ..., "찾은_논문": ..., "비슷한_정도": ...}, ...]"""
+    if not 목록:
+        return []
+    with ThreadPoolExecutor(max_workers=min(5, len(목록))) as 일꾼:
+        찾음들 = list(일꾼.map(찾아보기, 목록))
+    return [dict(자료=x, **찾음) for x, 찾음 in zip(목록, 찾음들)]
